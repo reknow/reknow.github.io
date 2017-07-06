@@ -7,17 +7,20 @@
   
   
   
-  <title>Archives | reknow&#39;s blog</title>
+  <title>python中的汉诺塔递归算法 | reknow&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="一天进步一点......">
-<meta property="og:type" content="website">
-<meta property="og:title" content="reknow&#39;s blog">
-<meta property="og:url" content="http://reknow.dropsec.xyz/archives/index.html">
+  <meta name="description" content="汉诺塔是将所有盘子（n个）从A柱挪至C柱，中间可以借用B柱，但是最终盘子都得在C柱上，而且需要大盘子在下，小盘子在上  先看一下python代码： def move(n, a, b, c):         if n ==1:              print (a, &amp;apos;--&amp;gt;&amp;apos;, c)              return         move(n-1, a,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python中的汉诺塔递归算法">
+<meta property="og:url" content="http://reknow.dropsec.xyz/2017/07/04/python中的汉诺塔递归算法/index.html">
 <meta property="og:site_name" content="reknow&#39;s blog">
-<meta property="og:description" content="一天进步一点......">
+<meta property="og:description" content="汉诺塔是将所有盘子（n个）从A柱挪至C柱，中间可以借用B柱，但是最终盘子都得在C柱上，而且需要大盘子在下，小盘子在上  先看一下python代码： def move(n, a, b, c):         if n ==1:              print (a, &amp;apos;--&amp;gt;&amp;apos;, c)              return         move(n-1, a,">
+<meta property="og:image" content="http://images.cnitblog.com/i/585151/201406/241602223308533.gif">
+<meta property="og:updated_time" content="2017-07-05T11:41:28.939Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="reknow&#39;s blog">
-<meta name="twitter:description" content="一天进步一点......">
+<meta name="twitter:title" content="python中的汉诺塔递归算法">
+<meta name="twitter:description" content="汉诺塔是将所有盘子（n个）从A柱挪至C柱，中间可以借用B柱，但是最终盘子都得在C柱上，而且需要大盘子在下，小盘子在上  先看一下python代码： def move(n, a, b, c):         if n ==1:              print (a, &amp;apos;--&amp;gt;&amp;apos;, c)              return         move(n-1, a,">
+<meta name="twitter:image" content="http://images.cnitblog.com/i/585151/201406/241602223308533.gif">
   
     <link rel="alternative" href="/atom.xml" title="reknow&#39;s blog" type="application/atom+xml">
   
@@ -42,8 +45,8 @@
           fancybox: true,
           animate: true,
           isHome: false,
-          isPost: false,
-          isArchive: true,
+          isPost: true,
+          isArchive: false,
           isTag: false,
           isCategory: false,
           open_in_new: false
@@ -268,52 +271,205 @@
         </header>                
     </div>
 </nav>
-      <div class="body-wrap">
+      <div class="body-wrap"><article id="post-python中的汉诺塔递归算法" class="article article-type-post" itemscope itemprop="blogPost">
   
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a  href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-          <div class="article-meta">
-              <a  href="/2017/07/04/python中的汉诺塔递归算法/" class="archive-article-date">
-      <time datetime="2017-07-04T14:50:25.000Z" itemprop="datePublished">07-04</time>
+    <div class="article-meta">
+      <a  href="/2017/07/04/python中的汉诺塔递归算法/" class="article-date">
+      <time datetime="2017-07-04T14:50:25.000Z" itemprop="datePublished">2017-07-04</time>
 </a>
 
-        </div>
-         
+    </div>
   
-    <h1 itemprop="name">
-      <a  class="archive-article-title" href="/2017/07/04/python中的汉诺塔递归算法/">python中的汉诺塔递归算法</a>
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      python中的汉诺塔递归算法
     </h1>
   
 
 
-        <div class="article-info info-on-archive">
-          
+      </header>
+      
+      <div class="article-info article-info-post">
+        
 
-          
-        </div>
+        
         <div class="clearfix"></div>
-    </header>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>汉诺塔是将所有盘子（n个）从A柱挪至C柱，中间可以借用B柱，但是最终盘子都得在C柱上，而且需要大盘子在下，小盘子在上</p>
+<p><img src="http://images.cnitblog.com/i/585151/201406/241602223308533.gif" alt=""></p>
+<p>先看一下python代码：</p>
+<pre><code>def move(n, a, b, c):
+        if n ==1:
+             print (a, &apos;--&gt;&apos;, c)
+             return
+        move(n-1, a, c, b)
+        print (a, &apos;--&gt;&apos;, c)
+        move(n-1, b, a, c)
+    move(3, &apos;A&apos;, &apos;B&apos;, &apos;C&apos;)
+</code></pre><p>代码第一行新建一个函数move（n，a，b，c），n代表一共多少个盘子，a、b、c分别代表柱子。下面的if函数说的是，如果就一个盘子，直接把盘子从a移动到c，然后return（返回）；第五行是将n-1个盘子从a经过c移动到b；第六行将a柱的最大盘移动到c柱；第七行是将b柱的盘子经过a移动到c。<br>   递归主要是5、6、7这三行，汉诺塔这个就是按照盘子的多少来不断循环的一个过程。注意不要被参数变化弄糊涂了。</p>
+<p>下面附上盘子为1、2、3时候的结果：</p>
+<hr>
+<p>盘子为1个 ：  </p>
+<pre><code>A --&gt; C
+</code></pre><p> 盘子为2个 ： </p>
+<pre><code>A --&gt; B
+A --&gt; C
+B --&gt; C
+</code></pre><p> 盘子为3个：</p>
+<pre><code>A --&gt; C
+A --&gt; B
+C --&gt; B
+A --&gt; C
+B --&gt; A
+B --&gt; C
+A --&gt; C
+</code></pre>
+      
+    </div>
+    
   </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a  href="/2017/07/04/python中的汉诺塔递归算法/">python中的汉诺塔递归算法</a></p>
+        <p><span>文章作者:</span><a  href="/" title="访问 reknow 的个人博客">reknow</a></p>
+        <p><span>发布时间:</span>2017年07月04日 - 22时50分</p>
+        <p><span>最后更新:</span>2017年07月05日 - 19时41分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/07/04/python中的汉诺塔递归算法/" title="python中的汉诺塔递归算法">http://reknow.dropsec.xyz/2017/07/04/python中的汉诺塔递归算法/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://reknow.dropsec.xyz/2017/07/04/python中的汉诺塔递归算法/　　作者: reknow" title=""></span>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+
+  
 </article>
-  
-  
-    </div></section>
-  
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+</div>
+<style>
+    .left-col .switch-btn {
+        display: none;
+    }
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+            $(".switch-btn, .switch-area").fadeOut(300);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+            $(".switch-btn, .switch-area").fadeIn(500);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+        $(".switch-btn, .switch-area").show();
+    }
+</script>
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
 
     
+        <section class="changyan" id="comments">
+  <!--<div id="uyan_frame"></div>-->
+  <div id="SOHUCS"></div>
+  <script charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/changyan.js"></script>
+  <script type="text/javascript">
+    window.changyan.api.config({
+      appid: 'xxxx',
+      conf: 'xxxxxxxxx'
+    });
+  </script>
+</section>
+    
 
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a  href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a  href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/07/04/python中的汉诺塔递归算法/">python中的汉诺塔递归算法</a></li></ul>
+    <script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        // $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#toc, .switch-btn, .switch-area").toggle();
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+                $(".switch-btn, .switch-area").fadeToggle(300);
+            }
+        })
+    </script>
+
+
+
+
+    <script>
+        
+    </script>
 
 </div>
       <footer id="footer">
@@ -403,17 +559,6 @@ ga('send', 'pageview');
         };
     })
 </script>
-
-    <button class="hide-labels">TAG 开关</button>
-    <script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js">
-    </script>
-    <script>
-        $(document).ready(function() {
-            $("button").click(function() {
-                $(".article-info").toggle(200);
-            });
-        });
-    </script>
 
 <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
 </script>
