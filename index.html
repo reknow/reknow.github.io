@@ -302,21 +302,18 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>汉诺塔是将所有盘子（n个）从A柱挪至C柱，中间可以借用B柱，但是最终盘子都得在C柱上，而且需要大盘子在下，小盘子在上</p>
+        <h2 id="什么是汉诺塔"><a href="#什么是汉诺塔" class="headerlink" title="什么是汉诺塔"></a>什么是汉诺塔</h2><p>汉诺塔是将所有盘子（n个）从A柱挪至C柱，中间可以借用B柱，但是最终盘子都得在C柱上，而且需要大盘子在下，小盘子在上</p>
 <p><img src="http://images.cnitblog.com/i/585151/201406/241602223308533.gif" alt=""></p>
-<p>先看一下python代码：</p>
-<pre><code>def move(n, a, b, c):
+<h2 id="对应的python代码"><a href="#对应的python代码" class="headerlink" title="对应的python代码"></a>对应的python代码</h2><pre><code>def move(n, a, b, c):
         if n ==1:
              print (a, &apos;--&gt;&apos;, c)
              return
         move(n-1, a, c, b)
         print (a, &apos;--&gt;&apos;, c)
         move(n-1, b, a, c)
-    move(3, &apos;A&apos;, &apos;B&apos;, &apos;C&apos;)
+    move(n, &apos;A&apos;, &apos;B&apos;, &apos;C&apos;)
 </code></pre><p>代码第一行新建一个函数move（n，a，b，c），n代表一共多少个盘子，a、b、c分别代表柱子。下面的if函数说的是，如果就一个盘子，直接把盘子从a移动到c，然后return（返回）；第五行是将n-1个盘子从a经过c移动到b；第六行将a柱的最大盘移动到c柱；第七行是将b柱的盘子经过a移动到c。<br>   递归主要是5、6、7这三行，汉诺塔这个就是按照盘子的多少来不断循环的一个过程。注意不要被参数变化弄糊涂了。</p>
-<p>下面附上盘子为1、2、3时候的结果：</p>
-<hr>
-<p>盘子为1个 ：  </p>
+<h2 id="盘子为1、2、3时的结果"><a href="#盘子为1、2、3时的结果" class="headerlink" title="盘子为1、2、3时的结果"></a>盘子为1、2、3时的结果</h2><p>盘子为1个 ：  </p>
 <pre><code>A --&gt; C
 </code></pre><p> 盘子为2个 ： </p>
 <pre><code>A --&gt; B
