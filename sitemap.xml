@@ -3,6 +3,140 @@
   
     
     <entry>
+      <title><![CDATA[分组密码--DES算法]]></title>
+      <url>/2017/07/19/%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81-DES%E7%AE%97%E6%B3%95/</url>
+      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>密码学</strong><br>DES算法是分组密码里面的常用算法，它是一种对称密码，加密和解密都是同一个密钥。<br><a id="more"></a></excerpt></p>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+
+<h2 id="什么是DES算法"><a href="#什么是DES算法" class="headerlink" title="什么是DES算法"></a>什么是DES算法</h2><p>　　DES是一种对称密码，加密和解密用的都是同一个密钥，有效密钥长度为56位。DES是一个分组密码算法，分组长度为64位，即对数据进行加解密的单位是64位，明文和密文的长度相同。由于加密和解密用的是同一算法，所以有利于硬件和软件上的实现。注意上面说的56位是有效密钥长度，事实上我们用的是64位密钥，但是第8,16,24,32,40,56和64位是奇偶校验位</p>
+<h2 id="DES算法的概述"><a href="#DES算法的概述" class="headerlink" title="DES算法的概述"></a>DES算法的概述</h2><p>　　</p>
+<h4 id="1-分组的加密算法"><a href="#1-分组的加密算法" class="headerlink" title="1.分组的加密算法"></a>1.分组的加密算法</h4><p>　　明文和密文为64位分组长度。</p>
+<h4 id="2-对称算法"><a href="#2-对称算法" class="headerlink" title="2.对称算法"></a>2.对称算法</h4><p>　　加密和解密除密钥编排不同外，使用同一算法。</p>
+<h4 id="3-密钥长度"><a href="#3-密钥长度" class="headerlink" title="3.密钥长度"></a>3.密钥长度</h4><p>　　56位，但存在弱密钥，容易避开。</p>
+<h4 id="4-采用混乱和扩散的组合，每个组合先替代后置换，共16轮"><a href="#4-采用混乱和扩散的组合，每个组合先替代后置换，共16轮" class="headerlink" title="4.采用混乱和扩散的组合，每个组合先替代后置换，共16轮"></a>4.采用混乱和扩散的组合，每个组合先替代后置换，共16轮</h4><h4 id="5-只使用了标准的算术和逻辑运算，易于实现"><a href="#5-只使用了标准的算术和逻辑运算，易于实现" class="headerlink" title="5.只使用了标准的算术和逻辑运算，易于实现"></a>5.只使用了标准的算术和逻辑运算，易于实现</h4><h4 id="6-现代密码学诞生的标志之一，揭开了商用密码研究的序幕"><a href="#6-现代密码学诞生的标志之一，揭开了商用密码研究的序幕" class="headerlink" title="6.现代密码学诞生的标志之一，揭开了商用密码研究的序幕"></a>6.现代密码学诞生的标志之一，揭开了商用密码研究的序幕</h4><h2 id="DES加密流程图"><a href="#DES加密流程图" class="headerlink" title="DES加密流程图"></a>DES加密流程图</h2><p><img src="http://upload-images.jianshu.io/upload_images/6755082-ff18a32847730b8c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h2 id="DES算法的实现"><a href="#DES算法的实现" class="headerlink" title="DES算法的实现"></a>DES算法的实现</h2><p>（一）初始置换（IP）。将明文块的位进行换位，其置换表示固定的。初始置换表为8*8的表格，第一位58表示该位置存放明文中的第58位字符。第1位字符已经变换到40位的位置。<br>　　注意初始置换是固定公开的函数，因此没有密码的意义。作用不大，它们的作用在于打乱原来输入x的ASCII码字划分的关系。经过初始置换之后，64位明文分成了两组L和R,各32位。由于这种方法软件实现较为麻烦，所有很多软件实现都删去了初始置换。经过初始置换，64位的输入得到了两个32位的输出。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/6755082-b811c9eed4f2ae05.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>（二）16轮的轮函数F变换。轮函数F由3个部分组成：扩展置换（E盒），非线性代换（S盒）和线性置换（P盒）。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/6755082-541483a04dc96b1f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>（1）E盒的作用是将32为扩展为48位，其扩展规则按下表进行。该表大小为6*8，去掉最左和最右两行，中间的四列包含了1-32的顺序。第1列和第6列分别是对第4和第1列的扩展。经过扩展置换，32位的输入得到了48位的输出。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/6755082-521341ec596d03d0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>（2）S盒的作用是进行非线性代换。S盒是DES中唯一的非线性部分，DES的安全强度主要取决于S盒的安全程度。S盒运算其实是一个查表运算。在E盒的扩展之后得到了48位的数据，将其和48位的子密钥进行异或运算，这是密钥参与运算的步骤。将其分成8个组，每组6个，送到8个S盒中去。每一个S盒都是一个6位输入4位输出的结构，也就是说，48位输入到8个S盒会得到4*8=32位的输出。6位输入到8位输出的映射关系如下表所示，其中，第一位和最后一位作为行号，第二位到第五位最为列号。例如，101100，则行号为10=2，列号为0110=6。查得（2,6）=2，化成二进制位0010。注意，8个S盒的映射关系各不相同。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/6755082-f2952fc17cae1f2a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>（3）P盒的作用只是进行简单的位置置换，只是简单地把一位换成另一位，不进行扩展和压缩。经过P盒操作，32位的输入得到32位的输出。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/6755082-05e4d2b313fb2367.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>轮函数F剩下的步骤通过轮函数的组成图可以清晰看出，这里不再详细介绍。主要就是进行异或操作。就这样对经过E盒拓展的64位数据进行16轮的变换。</p>
+<p>（三）逆初始置换。如果进行初始置换，则必须进行逆初始置换，逆初始置换的实现和初始置换一样，只是置换表不同而已。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/6755082-aa2d106b363ef69c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h2 id="DES子密钥生成方法"><a href="#DES子密钥生成方法" class="headerlink" title="DES子密钥生成方法"></a>DES子密钥生成方法</h2><p> 　　DES的初始64位密钥通过置换选择PC-1得到有效的56位密钥。这56位分为2个28位数据C0和D0。每轮迭代中Ci-1和Di-1分别循环左移1位或2位，移位后的值作为下一轮的输入，同时也作为置换选择PC-2的输入，通过置换选择PC-2产生一个48位的输出，即为一个子密钥。64位密钥生成了16个48位的子密钥。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/6755082-ccc9f1461e355e2a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h3 id="PC-1表（用于置换选择1）"><a href="#PC-1表（用于置换选择1）" class="headerlink" title="PC-1表（用于置换选择1）"></a>PC-1表（用于置换选择1）</h3><p><img src="http://upload-images.jianshu.io/upload_images/6755082-ea46e4e9d8839b7a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h3 id="PC-2表（用于置换选择2）"><a href="#PC-2表（用于置换选择2）" class="headerlink" title="PC-2表（用于置换选择2）"></a>PC-2表（用于置换选择2）</h3><p><img src="http://upload-images.jianshu.io/upload_images/6755082-6d206e04df0359ca.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h2 id="DES的核心技术"><a href="#DES的核心技术" class="headerlink" title="DES的核心技术"></a>DES的核心技术</h2><h4 id="S盒设计准则"><a href="#S盒设计准则" class="headerlink" title="S盒设计准则"></a>S盒设计准则</h4><p>　　1.具有良好的非线性；<br>　　2.每一行包括所有16种4位二进制；<br>　　3.两个输入相差1比特时，输出相差2比特；<br>　　4.如果两个输入刚好在中间两个比特上不同，则输出至少有输入至少有两个比特不同；<br>　　5.如果两个输入前两位不同而最后两位相同，则输出一定不同。</p>
+<h4 id="P盒设计准则"><a href="#P盒设计准则" class="headerlink" title="P盒设计准则"></a>P盒设计准则</h4><p>　　1.每个S盒的4位输出影响下一轮6个不同的S盒，但是没有两位影响同一S盒；<br>　　2.在第i轮S盒的4位输出中，2位将影响i+1轮中间位置，其余2位数将影响两端位；<br>　　3.如个一个S盒的4位输出影响另一个S盒的中间的一位，则后一个的输出位不会影响前面一个S盒的中间位。</p>
+<h4 id="DES的解密算法"><a href="#DES的解密算法" class="headerlink" title="DES的解密算法"></a>DES的解密算法</h4><p><img src="http://upload-images.jianshu.io/upload_images/6755082-1fe61efcfb970f53.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h4 id="DES解密流程图"><a href="#DES解密流程图" class="headerlink" title="DES解密流程图"></a>DES解密流程图</h4><p><img src="http://upload-images.jianshu.io/upload_images/6755082-aa8da009593d8f39.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+</the>]]></content>
+      
+        <categories>
+            
+            <category> 密码学 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 密码学 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[分组密码]]></title>
+      <url>/2017/07/19/%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/</url>
+      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>密码学</strong><br>分组密码是将一段很长的明文消息经过编码表示后的二进制序列划分为若干个固定长度，一一加密。<br><a id="more"></a></excerpt></p>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+
+<h2 id="分组密码的处理方式"><a href="#分组密码的处理方式" class="headerlink" title="分组密码的处理方式"></a>分组密码的处理方式</h2><p>（1）分组密码算法只负责固定长度消息的加、脱密；<br>（2）工作模式负责长消息的处理方式；<br>（3）短块处理方式负责短块处理方式的约定</p>
+<h2 id="分组密码的含义"><a href="#分组密码的含义" class="headerlink" title="分组密码的含义"></a>分组密码的含义</h2><p>　　也称块密码，它是将明文消息经过编码表示后的二进制序列m0，m1，……，mi，……划分成若干个固定长度（p）的组（或块）m=（m0，m1,……,mn），各组分别在密钥K=（K0，K1，……,Kt-1）的控制下转换成长度为n的密文分组C=（C0，C1，……,Cn-1）。其本质是一个从明文空间（m长的比特串的集合）P到密文空间（n长的比特串的集合）C的一一映射。（一般而言，p=n）</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/6755082-cb44a11dc4e23801.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h2 id="分组密码的要求"><a href="#分组密码的要求" class="headerlink" title="分组密码的要求"></a>分组密码的要求</h2><h3 id="1-分组长度要足够大"><a href="#1-分组长度要足够大" class="headerlink" title="1.分组长度要足够大"></a>1.分组长度要足够大</h3><p>　　当分组长度较小时候，攻击者通过穷举明文空间，得到密码变换规律，难以抵挡选择明文攻击。</p>
+<h3 id="2-密钥量要足够大"><a href="#2-密钥量要足够大" class="headerlink" title="2.密钥量要足够大"></a>2.密钥量要足够大</h3><p>　　如果密钥量小，攻击者可以有效地通过穷举密钥，对密文进行解密，来得到有意义的明文，难以抵挡唯密文攻击。</p>
+<h3 id="3-密码变换足够复杂"><a href="#3-密码变换足够复杂" class="headerlink" title="3.密码变换足够复杂"></a>3.密码变换足够复杂</h3><p>　　使攻击者出了穷举法攻击以外，找不到其它有效地数学破译方法。</p>
+<h3 id="4-加密解密运算简单"><a href="#4-加密解密运算简单" class="headerlink" title="4.加密解密运算简单"></a>4.加密解密运算简单</h3><p>　　便于软件和硬件的实现，性能好。</p>
+<h3 id="5-无数据扩展和压缩"><a href="#5-无数据扩展和压缩" class="headerlink" title="5.无数据扩展和压缩"></a>5.无数据扩展和压缩</h3><h2 id="设计思想"><a href="#设计思想" class="headerlink" title="设计思想"></a>设计思想</h2><p>　　使用迭代方式，由简单得、容易实现的模块搭建出抗破译能力强的分组密码算法；<br>　　每个模块各司其责、互相弥补对方的缺点，合作完成分组密码算法的搭建工作。</p>
+<h3 id="扩散"><a href="#扩散" class="headerlink" title="扩散"></a>扩散</h3><p>　　扩散是指要将算法设计成明文每一比特的变化尽可能多的影响到输出密文序列的变化，以便隐蔽明文的统计特性。形象地称为雪崩效应。<br>　　扩散的另外一层意思是密钥每一位的影响尽可能迅速地扩展到较多的密文比特中去。即扩散的目的是希望密文中的任一比特都要尽可能与明文、密钥相关联，或者说，明文和密钥中的任一比特值发生改变，都会在某种程度上影响到密文值得变化，以防止将密钥分解成若干个孤立小部分，然后各个击破。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/6755082-a9b0a12eb469c59e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h3 id="混乱"><a href="#混乱" class="headerlink" title="混乱"></a>混乱</h3><p>　　混乱，指在加解密变换过程中明文、密钥以及密文之间的关系尽可能地复杂化，以防密码破译者采用解析法（即通过建立并求解一些方程）进行破译攻击。<br>　　混乱可以用“搅拌机”来形象地解释，将一组明文和一组密钥输入到算法中，经过充分混合，最终变成密文。同时要求，执行这种“混乱”作业的每一步都必须是可逆的，即明文混乱以后能得到密文，反之，密文经过逆向的混乱操作后能恢复到明文。（按照混乱原则，分组密码算法应该有复杂的非线性因素）</p>
+<h2 id="分组密码的原理–乘积密码"><a href="#分组密码的原理–乘积密码" class="headerlink" title="分组密码的原理–乘积密码"></a>分组密码的原理–乘积密码</h2><p>　　依次使用两个或者两个以上的基本密码，所得结果的密码强度将强于所有单个密码的强度，即乘积密码是扩散和混乱两种基本密码操作的组合变换，这样能够产生比个子单独使用时更强大的密码系统。选择某个较为简单的密码变换（包含多个基本密码），在密钥控制下以迭代方式多次利用它进行加密变换，就可以实现预期的扩散和混乱效果。</p>
+<h2 id="乘积密码的实现–SP网络"><a href="#乘积密码的实现–SP网络" class="headerlink" title="乘积密码的实现–SP网络"></a>乘积密码的实现–SP网络</h2><p>　　SP网络是由多重S变换和P变换组合成的变换网络，它是乘积密码的一种。其基本操作是S变换（代替）和P变换（换位），前者称为S盒，后者称为P盒。S盒起到混乱作用，P盒起到扩散的作用。SP网络的构造及S盒、P盒的构造如下图所示：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/6755082-f633893e3431a069.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h2 id="SP网络的性质"><a href="#SP网络的性质" class="headerlink" title="SP网络的性质"></a>SP网络的性质</h2><p>　　SP网络具有雪崩效应。所谓雪崩效应是指，输入（明文或密钥）即使只有很小的变化，也会导致输出产生巨大的变化现象。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/6755082-b08579b125abccdb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h2 id="分组密码简图"><a href="#分组密码简图" class="headerlink" title="分组密码简图"></a>分组密码简图</h2><p><img src="http://upload-images.jianshu.io/upload_images/6755082-4dcc36968770df55.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h2 id="分组密码的设计准则"><a href="#分组密码的设计准则" class="headerlink" title="分组密码的设计准则"></a>分组密码的设计准则</h2><h3 id="分组长度"><a href="#分组长度" class="headerlink" title="分组长度"></a>分组长度</h3><p>　　能够抵御选择明文攻击</p>
+<h3 id="密钥长度"><a href="#密钥长度" class="headerlink" title="密钥长度"></a>密钥长度</h3><p>　　能够抵御唯密文攻击</p>
+<h3 id="轮函数（圈函数）F的设计准则"><a href="#轮函数（圈函数）F的设计准则" class="headerlink" title="轮函数（圈函数）F的设计准则"></a>轮函数（圈函数）F的设计准则</h3><p>　　轮函数F是分组密码的核心，是分组密码中单轮加密解密函数，其基本准则：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/6755082-b47103e7974b6256.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>　　其主要性能指标是：安全性、速度、灵活性。</p>
+<h3 id="子密钥的生成方法"><a href="#子密钥的生成方法" class="headerlink" title="子密钥的生成方法"></a>子密钥的生成方法</h3><p>　　子密钥的生成也是也是迭代分组算法的一个重要组成部分，是从初始（种子）密钥产生迭代的各轮要使用的子密钥的算法。也就是说，轮函数F的功能是在子密钥的参与和控制下实现的子密钥的生成很重要，其评价指标：<br>　　1.实现简单、速度满足要求；<br>　　2.种子密钥的所有比特对每个字密钥比特的影响应大致相同；<br>　　3.没有弱密钥或弱密钥容易确定。</p>
+<h3 id="迭代的轮数"><a href="#迭代的轮数" class="headerlink" title="迭代的轮数"></a>迭代的轮数</h3><p>　　分组密码一般采用简单的、安全性弱的加密函数进行多轮迭代运算，使得安全性增强。一般来说，分组密码迭代轮数越多，密码分析越困难，但也不是追求迭代数越多越好，过多迭代轮数会使加密算法的性能下降，而安全性增强不明显。决定迭代轮数的准则：使密码分析的难度大于简单穷举搜索攻击的难度。分组密码迭代轮数一般采用8,10,12,16,20的居</p>
+</the>]]></content>
+      
+        <categories>
+            
+            <category> 密码学 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 密码学 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[序列密码--A5-1算法]]></title>
+      <url>/2017/07/19/%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81-A5-1%E7%AE%97%E6%B3%95/</url>
+      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>密码学</strong><br>A5-1算法用于移动电话中的语音加密，来看看原理吧。<br><a id="more"></a></excerpt></p>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+
+<h3 id="A5-1算法"><a href="#A5-1算法" class="headerlink" title="A5-1算法"></a>A5-1算法</h3><p><img src="http://upload-images.jianshu.io/upload_images/6755082-4a28b3ea670aec67.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h3 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h3><p>　　Ａ5-1算法用于蜂窝式移动电话系统中的语音加密，主要用于用于的手机到基站之间的加密通信。通信内容到基站后先脱密变成明文，然后在进行基站到基站之间、以及基站到用户手机之间的信息加密，完成通信内容在通信过程的加密保护。<br>　　每次通话的时候，基站会产生一个64比特的随机数，与我们手机sim卡内本身带的一个密码利用一种加密算法生成一个密钥，这个密钥就是这次通话过程中使用的主密钥，此密钥的生命周期为这一次通话的开始到结束。一旦通话完成，那么这个密钥也就没有用了。<br>　　该加密算法把整个通讯的数据划分为每一帧来进行加密。每一帧是有228比特，其中发送端给接收端的数据114比特，接收端反馈给发送端的数据有114比特。除了上面提出的基站给出的64比特的总密钥，针对每一帧的加密，还有一种叫做会话密钥，这种会话密钥每加密一帧都会改变，会话密钥的生成是由帧号来决定的。每一次的会话密钥都会产生一个228比特的乱数来加密这一帧的数据。加密的方式是异或。帧号一共用22比特的二进制数来表示，也就是说一次通话只能传递2^22次方的通讯数据，因为每一次通话只有这么多帧可以进行加密数据并且传递。</p>
+<p>　　A5-1算法基于三个线性移位反馈寄存器实现的。三个LFSR的级数分别是19 22 23。<br>f1(x) = x^19 + x^18 + x^17 + x^14 + 1<br>f2(x) = x^22 + x^21 + 1<br>f3(x) = x^23 + x^22 + x^21 + x^8 + 1<br>三个反馈多项式如上所示。</p>
+<h3 id="所用工具"><a href="#所用工具" class="headerlink" title="所用工具"></a>所用工具</h3><p>　　根据上面所讲的，如果要实现a5-1的加密算法，我们需要哪些工具：首先是明文，其次是64位的密钥，三个LFSR，以及帧号。<br>　　算法的输入应该就是三个LFSR的初始值，算法的输出就是我们加密明文所需要的乱数。</p>
+<h3 id="实现步骤"><a href="#实现步骤" class="headerlink" title="实现步骤"></a>实现步骤</h3><p>　　算法总体来说分为三个部分，初始化，运算，输出乱数<br><img src="http://upload-images.jianshu.io/upload_images/6755082-50684bf88f426601.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>首先是初始化部分：<br>（1）将三个寄存器内的所有位全都赋值为0<br>（2）将三个寄存器做64次的移位操作，每第i次操作，寄存器的反馈内容都先与密钥中的第i位进行异或，然后把这样异或的结果作为寄存器此次的反馈内容。三个LSFR都要并行的做这样的工作64次。<br>（2）将三个寄存器做22次的移位操作，没第i次操作，寄存器的反馈项都先与帧序号的第i位进行异或，将异或的结果作为寄存器的最终反馈内容，同样，三个LSFR也都要并行做22次。<br>上述三步做完，A5-1加密算法的初始化操作也就做完了。另外需要注意的是，A5-1加密算法的LSFR是左移操作，并且，密钥和帧号都是从最低位到最高位编号。<br>当初始化步骤完成的时候，此时三个LSFR的状态合称为S0状态。</p>
+<p>接下来是计算和输出部分：<br>大家可以看到，上面的逻辑结构图中，有一个叫做钟控的部分，他有三个输出三个输入，三个输入是分别来三个LSFR的某一个固定位，输入会输出0或者1.0表示此次这个LSFR不会工作，也就是不会发生移动等等，输出的是1的话，那么这个LSFR此次就会移动一位并且得出反馈的结果。也就是说这个钟控在控制着三个LSFR的工作与否。<br>首先根据钟控的方式三个LSFR连续移动100次，但是不输出乱数，此时应该只是做一个混乱的操作。因为LSFR在移动过程中，每一位寄存器内的数值都会不一样，所以在钟控决定每个寄存器运行与否的结果时也会不相同。<br>接下来会三个LSFR会接着进行连续的114次的移动，也是根据钟控的方式。这一次的移动过程中，三个寄存器将分别把最高位寄存器的值输出，然后三个值做异或运算，形成第i个乱数。这次114次移动会生成一个114位的乱数，用于对手机到基站这一段的数据加密。<br>之后再进行一次100次的移动和114次的移动，结果和上面说的相同，最终产生的114位密钥用于基站到手机这段的通讯数据加密。</p>
+<p>关于钟控：<br>钟控将第一个寄存器的第八位，第二个寄存器的第10位，第三个寄存器的第10位。抽取这三个位用于控制三个LSFR的动作与否。他们决定的原则类似少数服从多数，三位一共有8种排列方式，当三位中1的个数多余0的个数时，那么这三位是1的对应的寄存器将会移动， 为0的不会，如果三位数中0的个数多余1的个数时，那么三位之中是0的对应的寄存器将会移动。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/6755082-4696904361b80e3b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/6755082-ee6ec06af28933fc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/6755082-2871257ac01145e9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>根据上面的步骤就可以算出当我们把通讯数据切割成每一帧，然后对每一帧进行加密传输的时候，所需要的那个加密的乱数是怎么得来的。至于加密过程很简单，就是明文和乱数的异或操作。</p>
+</the>]]></content>
+      
+        <categories>
+            
+            <category> 密码学 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 密码学 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[序列密码]]></title>
       <url>/2017/07/18/%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/</url>
       <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>序列密码</strong><br>序列密码在当今无论是生活中，外交还是军事都应用广泛。<br><a id="more"></a></excerpt></p>
