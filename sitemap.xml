@@ -40,7 +40,7 @@
       
         <categories>
             
-            <category> 密码学 </category>
+            <category> communication </category>
             
         </categories>
         
@@ -88,7 +88,7 @@
       
         <categories>
             
-            <category> 密码学 </category>
+            <category> communication </category>
             
         </categories>
         
@@ -123,7 +123,7 @@
       
         <categories>
             
-            <category> 密码学 </category>
+            <category> communication </category>
             
         </categories>
         
@@ -162,7 +162,7 @@
       
         <categories>
             
-            <category> 密码学 </category>
+            <category> communication </category>
             
         </categories>
         
@@ -176,8 +176,8 @@
     </entry>
     
     <entry>
-      <title><![CDATA[密码学]]></title>
-      <url>/2017/07/18/%E5%AF%86%E7%A0%81%E5%AD%A6/</url>
+      <title><![CDATA[密码学简介]]></title>
+      <url>/2017/07/18/%E5%AF%86%E7%A0%81%E5%AD%A6%E7%AE%80%E4%BB%8B/</url>
       <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>密码学</strong><br>密码学是以秘密通信为目的，研究密码编制、密码分析和密钥管理的一门综合性应用科学。<br><a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
 
@@ -204,7 +204,7 @@
       
         <categories>
             
-            <category> 密码学 </category>
+            <category> communication </category>
             
         </categories>
         
@@ -229,14 +229,14 @@
       
         <categories>
             
-            <category> 生活 </category>
+            <category> know </category>
             
         </categories>
         
         
         <tags>
             
-            <tag> blog </tag>
+            <tag> hexo </tag>
             
         </tags>
         
@@ -275,14 +275,172 @@ comment: false
       
         <categories>
             
-            <category> 生活 </category>
+            <category> know </category>
             
         </categories>
         
         
         <tags>
             
-            <tag> blog </tag>
+            <tag> hexo </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[hexo博客主题部分--标签]]></title>
+      <url>/2017/07/07/python%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96%E6%8A%80%E5%B7%A7/</url>
+      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>python代码优化技巧：</strong><br>写个美美的代码还是很重要的，这个将来特别会体现在工作中怎么优化代码呢……<br><a id="more"></a></excerpt></p>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+
+
+<p>##Python代码性能优化技巧<br>　　代码优化能够让程序运行更快，它是在不改变程序运行结果的情况下使得程序的运行效率更高，根据 80/20 原则，实现程序的重构、优化、扩展以及文档相关的事情通常需要消耗 80% 的工作量。优化通常包含两方面的内容：减小代码的体积，提高代码的运行效率。</p>
+<h2 id="改进算法，选择合适的数据结构"><a href="#改进算法，选择合适的数据结构" class="headerlink" title="改进算法，选择合适的数据结构"></a>改进算法，选择合适的数据结构</h2><p>　　一个良好的算法能够对性能起到关键作用，因此性能改进的首要点是对算法的改进。在算法的时间复杂度排序上依次是：</p>
+<blockquote>
+<p><strong>O(1) -O(lg n) -O(n lg n) -O(n^2) -O(n^3) -O(n^k) -O(k^n) -O(n!)</strong></p>
+</blockquote>
+<p>　　因此如果能够在时间复杂度上对算法进行一定的改进，对性能的提高不言而喻。但对具体算法的改进不属于本文讨论的范围，读者可以自行参考这方面资料。下面的内容将集中讨论数据结构的选择。</p>
+<h2 id="字典-dictionary-与列表-list"><a href="#字典-dictionary-与列表-list" class="headerlink" title="字典 (dictionary) 与列表 (list)"></a>字典 (dictionary) 与列表 (list)</h2><p>　　Python 字典中使用了 hash table，因此查找操作的复杂度为 O(1)，而 list 实际是个数组，在 list 中，查找需要遍历整个 list，其复杂度为 O(n)，因此对成员的查找访问等操作字典要比 list 更快。</p>
+<h3 id="清单-1-代码-dict-py"><a href="#清单-1-代码-dict-py" class="headerlink" title="清单 1. 代码 dict.py"></a>清单 1. 代码 dict.py</h3><pre><code>from time import time  
+t = time()  
+list = [&apos;a&apos;,&apos;b&apos;,&apos;is&apos;,&apos;python&apos;,&apos;jason&apos;,&apos;hello&apos;,&apos;hill&apos;,&apos;with&apos;,&apos;phone&apos;,&apos;test&apos;,  
+&apos;dfdf&apos;,&apos;apple&apos;,&apos;pddf&apos;,&apos;ind&apos;,&apos;basic&apos;,&apos;none&apos;,&apos;baecr&apos;,&apos;var&apos;,&apos;bana&apos;,&apos;dd&apos;,&apos;wrd&apos;]  
+#list = dict.fromkeys(list,True)  
+print list  
+filter = []  
+for i in range (1000000):  
+for find in [&apos;is&apos;,&apos;hat&apos;,&apos;new&apos;,&apos;list&apos;,&apos;old&apos;,&apos;.&apos;]:  
+if find not in list:  
+filter.append(find)  
+print &quot;total run time:&quot; 
+print time()-t 
+</code></pre><p>　　上述代码运行大概需要 16.09seconds。如果去掉行 #list = dict.fromkeys(list,True) 的注释，将 list 转换为字典之后再运行，时间大约为 8.375 seconds，效率大概提高了一半。因此在需要多数据成员进行频繁的查找或者访问的时候，使用 dict 而不是 list 是一个较好的选择。</p>
+<h2 id="集合-set-与列表-list"><a href="#集合-set-与列表-list" class="headerlink" title="集合 (set) 与列表 (list)"></a>集合 (set) 与列表 (list)</h2><p>　　set 的 union， intersection，difference 操作要比 list 的迭代要快。因此如果涉及到求 list 交集，并集或者差的问题可以转换为 set 来操作。</p>
+<h3 id="清单-2-求-list-的交集："><a href="#清单-2-求-list-的交集：" class="headerlink" title="清单 2. 求 list 的交集："></a>清单 2. 求 list 的交集：</h3><pre><code>from time import time  
+t = time()  
+lista=[1,2,3,4,5,6,7,8,9,13,34,53,42,44]  
+listb=[2,4,6,9,23]  
+intersection=[]  
+for i in range (1000000):  
+for a in lista:  
+for b in listb:  
+if a == b:  
+intersection.append(a)  
+print &quot;total run time:&quot; 
+print time()-t 
+</code></pre><p>上述程序的运行时间大概为：</p>
+<pre><code>total run time:
+
+38.4070000648
+</code></pre><h3 id="清单-3-使用-set-求交集"><a href="#清单-3-使用-set-求交集" class="headerlink" title="清单 3. 使用 set 求交集"></a>清单 3. 使用 set 求交集</h3><pre><code>from time import time  
+ t = time()  
+ lista=[1,2,3,4,5,6,7,8,9,13,34,53,42,44]  
+ listb=[2,4,6,9,23]  
+ intersection=[]  
+ for i in range (1000000):  
+ list(set(lista)&amp;set(listb))  
+ print &quot;total run time:&quot; 
+ print time()-t 
+</code></pre><p>　　改为 set 后程序的运行时间缩减为 8.75，提高了 4 倍多，运行时间大大缩短。读者可以自行使用表 1 其他的操作进行测试。</p>
+<h3 id="表-1-set-常见用法"><a href="#表-1-set-常见用法" class="headerlink" title="表 1. set 常见用法"></a>表 1. set 常见用法</h3><p>语法操作说明</p>
+<blockquote>
+<p>set(list1) | set(list2)             union                    包含 list1 和 list2 所有数据的新集合</p>
+<p>set(list1) &amp; set(list2)           intersection          包含 list1 和 list2 中共同元素的新集合</p>
+<p>set(list1) – set(list2)           difference             在 list1 中出现但不在 list2 中出现的元素的集合</p>
+</blockquote>
+<h2 id="对循环的优化"><a href="#对循环的优化" class="headerlink" title="对循环的优化"></a>对循环的优化</h2><p>　　对循环的优化所遵循的原则是尽量减少循环过程中的计算量，有多重循环的尽量将内层的计算提到上一层。 下面通过实例来对比循环优化后所带来的性能的提高。程序清单 4 中，如果不进行循环优化，其大概的运行时间约为 132.375。</p>
+<h3 id="清单-4-为进行循环优化前"><a href="#清单-4-为进行循环优化前" class="headerlink" title="清单 4. 为进行循环优化前"></a>清单 4. 为进行循环优化前</h3><pre><code>from time import time  
+ t = time()  
+ lista = [1,2,3,4,5,6,7,8,9,10]  
+ listb =[0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,0.01]  
+ for i in range (1000000):  
+ for a in range(len(lista)):  
+ for b in range(len(listb)):  
+ x=lista[a]+listb[b]  
+ print &quot;total run time:&quot; 
+ print time()-t 
+</code></pre><p>　　现在进行如下优化，将长度计算提到循环外，range 用 xrange 代替，同时将第三层的计算 lista[a] 提到循环的第二层。</p>
+<h3 id="清单-5-循环优化后"><a href="#清单-5-循环优化后" class="headerlink" title="清单 5. 循环优化后"></a>清单 5. 循环优化后</h3><pre><code>from time import time  
+ t = time()  
+ lista = [1,2,3,4,5,6,7,8,9,10]  
+ listb =[0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,0.01]  
+ len1=len(lista)  
+ len2=len(listb)  
+ for i in xrange (1000000):  
+ for a in xrange(len1):  
+ temp=lista[a]  
+ for b in xrange(len2):  
+ x=temp+listb[b]  
+ print &quot;total run time:&quot; 
+ print time()-t 
+</code></pre><p>　　上述优化后的程序其运行时间缩短为 102.171999931。在清单 4 中 lista[a] 被计算的次数为 1000000<em>10</em>10，而在优化后的代码中被计算的次数为 1000000*10，计算次数大幅度缩短，因此性能有所提升。</p>
+<h3 id="充分利用-Lazy-if-evaluation-的特性"><a href="#充分利用-Lazy-if-evaluation-的特性" class="headerlink" title="充分利用 Lazy if-evaluation 的特性"></a>充分利用 Lazy if-evaluation 的特性</h3><p>　　python 中条件表达式是 lazy evaluation 的，也就是说如果存在条件表达式 if x and y，在 x 为 false 的情况下 y 表达式的值将不再计算。因此可以利用该特性在一定程度上提高程序效率。</p>
+<h3 id="清单-6-利用-Lazy-if-evaluation-的特性"><a href="#清单-6-利用-Lazy-if-evaluation-的特性" class="headerlink" title="清单 6. 利用 Lazy if-evaluation 的特性"></a>清单 6. 利用 Lazy if-evaluation 的特性</h3><pre><code>from time import time  
+ t = time()  
+ abbreviations = [&apos;cf.&apos;, &apos;e.g.&apos;, &apos;ex.&apos;, &apos;etc.&apos;, &apos;fig.&apos;, &apos;i.e.&apos;, &apos;Mr.&apos;, &apos;vs.&apos;]  
+ for i in range (1000000):  
+ for w in (&apos;Mr.&apos;, &apos;Hat&apos;, &apos;is&apos;, &apos;chasing&apos;, &apos;the&apos;, &apos;black&apos;, &apos;cat&apos;, &apos;.&apos;):  
+ if w in abbreviations:  
+ #if w[-1] == &apos;.&apos; and w in abbreviations:  
+ pass 
+ print &quot;total run time:&quot; 
+ print time()-t 
+</code></pre><p>　　在未进行优化之前程序的运行时间大概为 8.84，如果使用注释行代替第一个 if，运行的时间大概为 6.17。</p>
+<h2 id="字符串的优化"><a href="#字符串的优化" class="headerlink" title="字符串的优化"></a>字符串的优化</h2><p>　　python 中的字符串对象是不可改变的，因此对任何字符串的操作如拼接，修改等都将产生一个新的字符串对象，而不是基于原字符串，因此这种持续的 copy 会在一定程度上影响 python 的性能。对字符串的优化也是改善性能的一个重要的方面，特别是在处理文本较多的情况下。字符串的优化主要集中在以下几个方面：</p>
+<p>　　在字符串连接的使用尽量使用 join() 而不是 +：在代码清单 7 中使用 + 进行字符串连接大概需要 0.125 s，而使用 join 缩短为 0.016s。因此在字符的操作上 join 比 + 要快，因此要尽量使用 join 而不是 +。</p>
+<h3 id="清单-7-使用-join-而不是-连接字符串"><a href="#清单-7-使用-join-而不是-连接字符串" class="headerlink" title="清单 7. 使用 join 而不是 + 连接字符串"></a>清单 7. 使用 join 而不是 + 连接字符串</h3><pre><code>from time import time  
+t = time()  
+ s = &quot;&quot;  
+ list = [&apos;a&apos;,&apos;b&apos;,&apos;b&apos;,&apos;d&apos;,&apos;e&apos;,&apos;f&apos;,&apos;g&apos;,&apos;h&apos;,&apos;i&apos;,&apos;j&apos;,&apos;k&apos;,&apos;l&apos;,&apos;m&apos;,&apos;n&apos;]  
+ for i in range (10000):  
+ for substr in list:  
+ s+= substr  
+ print &quot;total run time:&quot; 
+ print time()-t 
+</code></pre><p>同时要避免：</p>
+<pre><code>s = &quot;&quot;  
+for x in list:  
+s += func(x) 
+</code></pre><p>而是要使用：</p>
+<pre><code>slist = [func(elt) for elt in somelist]
+ s = &quot;&quot;.join(slist)
+</code></pre><p>　　当对字符串可以使用正则表达式或者内置函数来处理的时候，选择内置函数。如 str.isalpha()，str.isdigit()，str.startswith((‘x’, ‘yz’))，str.endswith((‘x’, ‘yz’))</p>
+<p>　</p>
+<blockquote>
+<p>对字符进行格式化比直接串联读取要快，因此要使用</p>
+</blockquote>
+<p><code>out = &quot;%s%s%s%s&quot; % (head, prologue, query, tail)</code><br>而避免</p>
+<pre><code>out = &quot;&quot; + head + prologue + query + tail + &quot;&quot; 
+</code></pre><p>　　使用列表解析（list comprehension）和生成器表达式（generator expression）</p>
+<p>　　列表解析要比在循环中重新构建一个新的 list 更为高效，因此我们可以利用这一特性来提高运行的效率。</p>
+<pre><code>from time import time  
+ t = time()  
+ list = [&apos;a&apos;,&apos;b&apos;,&apos;is&apos;,&apos;python&apos;,&apos;jason&apos;,&apos;hello&apos;,&apos;hill&apos;,&apos;with&apos;,&apos;phone&apos;,&apos;test&apos;,  
+ &apos;dfdf&apos;,&apos;apple&apos;,&apos;pddf&apos;,&apos;ind&apos;,&apos;basic&apos;,&apos;none&apos;,&apos;baecr&apos;,&apos;var&apos;,&apos;bana&apos;,&apos;dd&apos;,&apos;wrd&apos;]  
+ total=[]  
+ for i in range (1000000):  
+ for w in list:  
+ total.append(w)  
+ print &quot;total run time:&quot; 
+ print time()-t 
+</code></pre><p>使用列表解析：</p>
+<pre><code>for i in range (1000000):  
+a = [w for w in list] 
+</code></pre><p>　　上述代码直接运行大概需要 17s，而改为使用列表解析后 ，运行时间缩短为 9.29s。将近提高了一半。生成器表达式则是在 2.4 中引入的新内容，语法和列表解析类似，但是在大数据量处理时，生成器表达式的优势较为明显，它并不创建一个列表，只是返回一个生成器，因此效率较高。在上述例子上中代码 a = [w for w in list] 修改为 a = (w for w in list)，运行时间进一步减少，缩短约为 2.98s。</p>
+</the>]]></content>
+      
+        <categories>
+            
+            <category> technology </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> python </tag>
             
         </tags>
         
@@ -343,6 +501,12 @@ B --&gt; C
 A --&gt; C
 </code></pre></the>]]></content>
       
+        <categories>
+            
+            <category> technology </category>
+            
+        </categories>
+        
         
         <tags>
             
