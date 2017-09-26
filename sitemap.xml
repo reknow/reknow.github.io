@@ -3,6 +3,147 @@
   
     
     <entry>
+      <title><![CDATA[重定向对象redirect]]></title>
+      <url>/2017/09/26/%E9%87%8D%E5%AE%9A%E5%90%91%E5%AF%B9%E8%B1%A1redirect/</url>
+      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>redirect</strong><br>重定向是一种特殊的响应，响应内容是URL，而不是包含html代码的字符串。<br><a id="more"></a></excerpt></p>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<blockquote>
+<p>重定向是一种特殊的响应， 响应内容是URL，而不是包含HTML 代码的字符串。浏览器收到这种响应时， 会向重定向的URL 发起 GET 请求，显示页面的内容。</p>
+</blockquote>
+<p>　　下面是一段代码，正常运行时候都是显示“这是首页”</p>
+<pre><code>from flask import Flask
+
+app = Flask(__name__)
+
+@app.route(&apos;/&apos;)
+def index():
+  return &apos;这是首页&apos;
+
+@app.route(&apos;/login/&apos;)
+def login():
+  return &apos;欢迎登录&apos;
+</code></pre><blockquote>
+<p>加上redirect函数后再次运行都会显示“欢迎登陆”，就是自动跳到登陆（login）界面去了</p>
+</blockquote>
+<pre><code>from flask import Flask,redirect,url_for
+
+app = Flask(__name__)
+
+@app.route(&apos;/&apos;)
+def index():
+  login_url = url_for(&apos;login&apos;)
+  return redirect(login_url)
+  return &apos;这是首页&apos;
+
+@app.route(&apos;/login/&apos;)
+def login():
+  return &apos;欢迎登录&apos;
+</code></pre><blockquote>
+<p>当用户访问某些网页时，如果他还没登录，我们往往会把网页 重定向 到登录页面，Flask 提供了 redirect 对象对其进行处理，我们对上面的代码做一点简单的改造，如果用户注册了，我们将网页重定向到首页。</p>
+</blockquote>
+<pre><code>from flask import Flask,redirect,url_for
+
+app = Flask(__name__)
+
+@app.route(&apos;/&apos;)
+def index():
+  login_url = url_for(&apos;login&apos;)
+  return redirect(login_url)
+  return &apos;这是首页&apos;
+
+@app.route(&apos;/login/&apos;)
+def login():
+  return &apos;欢迎登录&apos;
+
+@app.route(&apos;/message/&lt;a_login&gt;/&apos;)
+def message(a_login):
+  if a_login==&apos;1&apos;:
+    return &apos;欢迎查看资料信息&apos;
+  else:
+    return redirect(url_for(&apos;login&apos;))
+</code></pre><blockquote>
+<p>推荐使用url_for() 生成 URL，因为这个函数使用URL 映射生成 URL，从而保证URL 和定义的路由兼容，而且修改路由名字后依然可用。url_for()函数的第一个且唯一必须指定的参数是端点名，即路由的内部名字。 默认情况下，路由的端点是相应视图函数的名字。</p>
+</blockquote>
+</the>]]></content>
+      
+        <categories>
+            
+            <category> technology </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> flask </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Flask框架-debug模式]]></title>
+      <url>/2017/09/26/Flask%E6%A1%86%E6%9E%B6-debug%E6%A8%A1%E5%BC%8F/</url>
+      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>debug模式：</strong><br>debug模式为我们写flask提供了很大的便利<br><a id="more"></a></excerpt></p>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+
+
+
+
+<p>debug模式在我们写flask的时候提供了两点好处</p>
+<h2 id="第一点"><a href="#第一点" class="headerlink" title="第一点"></a>第一点</h2><p>当程序出现问题的时候，可以在页面中看到错误信息和错误位置；</p>
+<p>下面给出一个简单小程序：</p>
+<pre><code>from flask import Flask
+app = Flask(__name__)
+
+@app.route(&apos;/&apos;)
+def hello_world():
+  a = 1
+  b = 0
+  c = a / b
+  return &apos;第一个flask程序&apos;
+
+if __name__ == &apos;__main__&apos;:
+  app.run()
+</code></pre><p>代码里面有个除零的运算，当没有使用debug时候界面是下面这样子的</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/6755082-dd575d98f45e5731.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>下面代码使用debug模式</p>
+<pre><code>from flask import Flask
+
+app = Flask(__name__)
+
+@app.route(&apos;/&apos;)
+def hello_world():
+  a = 1
+  b = 0
+  c = a / b
+  return &apos;第一个flask程序&apos;
+
+if __name__ == &apos;__main__&apos;:
+  app.run(debug=True)
+</code></pre><p>输出框显示结果<br><img src="http://upload-images.jianshu.io/upload_images/6755082-bf311c949d11746e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="提示错误原因"></p>
+<p>界面显示结果<br><img src="http://upload-images.jianshu.io/upload_images/6755082-264135adb4f8f191.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="显示错误位置"></p>
+<h2 id="第二点"><a href="#第二点" class="headerlink" title="第二点"></a>第二点</h2><p>只要修改了项目中的python文件（必须是python文件），程序会自动加载，不需要重新启动服务器。</p>
+</the>]]></content>
+      
+        <categories>
+            
+            <category> know </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> flask </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[分组密码--DES算法]]></title>
       <url>/2017/07/19/%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81-DES%E7%AE%97%E6%B3%95/</url>
       <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>密码学</strong><br>DES算法是分组密码里面的常用算法，它是一种对称密码，加密和解密都是同一个密钥。<br><a id="more"></a></excerpt></p>
@@ -288,7 +429,7 @@ comment: false
     </entry>
     
     <entry>
-      <title><![CDATA[hexo博客主题部分--标签]]></title>
+      <title><![CDATA[python代码优化技巧]]></title>
       <url>/2017/07/07/python%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96%E6%8A%80%E5%B7%A7/</url>
       <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>python代码优化技巧：</strong><br>写个美美的代码还是很重要的，这个将来特别会体现在工作中怎么优化代码呢……<br><a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
@@ -432,7 +573,7 @@ a = [w for w in list]
       
         <categories>
             
-            <category> technology </category>
+            <category> know </category>
             
         </categories>
         
@@ -440,25 +581,6 @@ a = [w for w in list]
         <tags>
             
             <tag> python </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[python的进阶]]></title>
-      <url>/2017/07/06/python%E7%9A%84%E8%BF%9B%E9%98%B6/</url>
-      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>测试篇</strong><br>随便写写小测试<br><a id="more"></a></excerpt></p>
-<the rest="" of="" contents="" |="" 余下全文="">
-
-<p>实验一下，看看效果怎样111111111111111111111111111111111111111<br>111111111111111111111111111111111111111<br>11111111111111111111111111111</p>
-<p>的撒啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊<br>333333333333333333333333333333333333333<br>333333333333333333333333333333333333333<br>33</p>
-</the>]]></content>
-      
-        
-        <tags>
-            
-            <tag> misc </tag>
             
         </tags>
         
