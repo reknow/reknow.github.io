@@ -7,18 +7,23 @@
   
   
   
-  <title>about | reknow&#39;s blog</title>
+  <title>Windows下修改MySQL5.7.11的root密码 | reknow&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Personal profile　　喜欢自由，向往美好，爱动爱笑爱闹，爱学习，爱游戏，当然更爱我的家人 I like some of the things that I like哪管桑田 ，哪管沧海  　　 学习吧 ，骚年  accompany forever">
-<meta property="og:type" content="website">
-<meta property="og:title" content="about">
-<meta property="og:url" content="http://reknow.dropsec.xyz/about/index.html">
+  <meta name="description" content="修改mysql的root密码：mysql的最新版本5.7.11安装后除了第一次启动服务root账户正确，以后启动root都显示密码错误。对待这种情况应该怎么解决呢？">
+<meta name="keywords" content="mysql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows下修改MySQL5.7.11的root密码">
+<meta property="og:url" content="http://reknow.dropsec.xyz/2017/10/25/windows下修改MySQL5.7.11的root密码/index.html">
 <meta property="og:site_name" content="reknow&#39;s blog">
-<meta property="og:description" content="Personal profile　　喜欢自由，向往美好，爱动爱笑爱闹，爱学习，爱游戏，当然更爱我的家人 I like some of the things that I like哪管桑田 ，哪管沧海  　　 学习吧 ，骚年  accompany forever">
-<meta property="og:updated_time" content="2017-07-19T09:05:38.253Z">
+<meta property="og:description" content="修改mysql的root密码：mysql的最新版本5.7.11安装后除了第一次启动服务root账户正确，以后启动root都显示密码错误。对待这种情况应该怎么解决呢？">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6755082-faca034d6d9737e8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6755082-6046f76a8065e211.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6755082-969697ba39446e18.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-10-25T09:42:18.543Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="about">
-<meta name="twitter:description" content="Personal profile　　喜欢自由，向往美好，爱动爱笑爱闹，爱学习，爱游戏，当然更爱我的家人 I like some of the things that I like哪管桑田 ，哪管沧海  　　 学习吧 ，骚年  accompany forever">
+<meta name="twitter:title" content="Windows下修改MySQL5.7.11的root密码">
+<meta name="twitter:description" content="修改mysql的root密码：mysql的最新版本5.7.11安装后除了第一次启动服务root账户正确，以后启动root都显示密码错误。对待这种情况应该怎么解决呢？">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/6755082-faca034d6d9737e8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
   
     <link rel="alternative" href="/atom.xml" title="reknow&#39;s blog" type="application/atom+xml">
   
@@ -43,7 +48,7 @@
           fancybox: true,
           animate: true,
           isHome: false,
-          isPost: false,
+          isPost: true,
           isArchive: false,
           isTag: false,
           isCategory: false,
@@ -267,11 +272,11 @@
         </header>                
     </div>
 </nav>
-      <div class="body-wrap"><article id="page-undefined" class="article article-type-page" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-windows下修改MySQL5.7.11的root密码" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a  href="/about/index.html" class="article-date">
-      <time datetime="2017-07-06T08:32:03.000Z" itemprop="datePublished">2017-07-06</time>
+      <a  href="/2017/10/25/windows下修改MySQL5.7.11的root密码/" class="article-date">
+      <time datetime="2017-10-25T09:37:10.000Z" itemprop="datePublished">2017-10-25</time>
 </a>
 
     </div>
@@ -285,7 +290,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      about
+      Windows下修改MySQL5.7.11的root密码
     </h1>
   
 
@@ -294,8 +299,16 @@
       
       <div class="article-info article-info-post">
         
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/know/">know</a>
+    </div>
+
 
         
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li></ul>
+    </div>
+
         <div class="clearfix"></div>
       </div>
       
@@ -303,56 +316,108 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-              <style>
-    .article-meta {
-        display: none;
-    }
-    #container .article .article-title {
-        padding-right: 0;
-    }
-    .article-header {
-        padding: 0;
-        padding-top: 26px;
-        border-left: none;
-        text-align: center;
-    }
-    .article-header:hover {
-        border-left: none;
-    }
-    .article-title {
-        font-size: 1.6em
-    }
-    .article-meta {
-        display: none;
-    }
-    .article-entry hr {
-        margin: 0;
-    }
-    #container .article-info-post.article-info {
-      display: none;
-      }
-    #container .article .article-title {
-    padding: 0;
-    }
-</style>
+        <p><excerpt in="" index="" |="" 首页摘要=""><br><strong>修改mysql的root密码：</strong><br>mysql的最新版本5.7.11安装后除了第一次启动服务root账户正确，以后启动root都显示密码错误。对待这种情况应该怎么解决呢？<br><a id="more"></a></excerpt></p>
+<the rest="" of="" contents="" |="" 余下全文="">
 
 
-          
-        <h2 id="Personal-profile"><a href="#Personal-profile" class="headerlink" title="Personal profile"></a>Personal profile</h2><p>　　喜欢自由，向往美好，爱动爱笑爱闹，爱学习，爱游戏，当然更爱我的家人</p>
-<h2 id="I-like-some-of-the-things-that-I-like"><a href="#I-like-some-of-the-things-that-I-like" class="headerlink" title="I like some of the things that I like"></a>I like some of the things that I like</h2><p>哪管桑田 ，哪管沧海  　　 学习吧 ，骚年 </p>
-<p><strong><em>accompany forever</em></strong></p>
+<h2 id="首先"><a href="#首先" class="headerlink" title="首先"></a>首先</h2><p>到mysql的官网下载最新的5.7.11版本的mysql，按照教程安装好，一般默认在C盘的Program Files文件夹里，mysql的data文件在C盘的Program Data文件夹里。</p>
+<h2 id="环境变量进配置："><a href="#环境变量进配置：" class="headerlink" title="环境变量进配置："></a>环境变量进配置：</h2><p><img src="http://upload-images.jianshu.io/upload_images/6755082-faca034d6d9737e8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="配置环境变量"></p>
+<h2 id="几个命令："><a href="#几个命令：" class="headerlink" title="几个命令："></a>几个命令：</h2><pre><code>安装 MySQL 服务: mysqld --install
 
+启动: net start MySQL
+
+停止: net stop MySQL
+
+卸载: sc delete MySQL，mysqld -remove
+</code></pre><p>命令行安装也可以，注意：命令行窗口一定要用管理员模式打开，来到%MYSQL_HOME%\bin;这个目录下，<br>a.安装服务：mysqld –install。<br>b.启动服务 net start MySQL</p>
+<h2 id="root密码进不去"><a href="#root密码进不去" class="headerlink" title="root密码进不去"></a>root密码进不去</h2><ul>
+<li>启动成功了，（安装在默认C盘的Program Files文件夹里的可以直接在命令行里输入mysql的登录指令，没有安装在默认C盘的，这时候必须先进入到mysql文件夹的bin文件夹下）输入命令mysql -uroot -p 回车（这是进入mysql的root账户命令）</li>
+<li>输入密码，显示错误ERROR 1045 (28000): Access denied for user ‘root’@’localhost’ (using password: YES)，看着上面说的，输入YES就好了，很开心，以为发现了很激动的信息，就理所当然的输入了YES等待进去，别天真了，没任何作用。这时候无论怎么输密码都是显示ERROR 1045，没办法只有重置密码。</li>
+</ul>
+<h2 id="修改root密码"><a href="#修改root密码" class="headerlink" title="修改root密码"></a>修改root密码</h2><ul>
+<li>关闭服务net stop MySQL，用安全模式打开，mysqld –skip-grant-tables。这个时候，光标会一直闪。注意，千万别急按回车或者关闭，这时候千万不要动，打开另一个命令行窗口。（安装在默认C盘的Program Files文件夹里的可以直接在命令行里输入mysql的登录指令，没有安装在默认C盘的，这时候必须先进入到mysql文件夹的bin文件夹下）登录 mysql -u root -p密码为空,直接回车；就可以进去了。然后use mysql;</li>
+<li>（可能先前的版本密码的抬头是password，5.7.11是 authentication_string,可以select * from user,查看一下）</li>
+<li>(老版本)update user set password=password(“123456”) where user=”root”;</li>
+<li>（5.7.11）update user set authentication_string=password(“123456”) where user=”root”;</li>
+<li>最后，flush privileges;就OK了。</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/6755082-6046f76a8065e211.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h2 id="退出去重新登录一下试试看："><a href="#退出去重新登录一下试试看：" class="headerlink" title="退出去重新登录一下试试看："></a>退出去重新登录一下试试看：</h2><p><img src="http://upload-images.jianshu.io/upload_images/6755082-969697ba39446e18.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+</the>
       
     </div>
     
   </div>
   
     
+    <div class="copyright">
+        <p><span>本文标题:</span><a  href="/2017/10/25/windows下修改MySQL5.7.11的root密码/">Windows下修改MySQL5.7.11的root密码</a></p>
+        <p><span>文章作者:</span><a  href="/" title="访问 reknow 的个人博客">reknow</a></p>
+        <p><span>发布时间:</span>2017年10月25日 - 17时37分</p>
+        <p><span>最后更新:</span>2017年10月25日 - 17时42分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/10/25/windows下修改MySQL5.7.11的root密码/" title="Windows下修改MySQL5.7.11的root密码">http://reknow.dropsec.xyz/2017/10/25/windows下修改MySQL5.7.11的root密码/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://reknow.dropsec.xyz/2017/10/25/windows下修改MySQL5.7.11的root密码/　　作者: reknow" title=""></span>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
 
+
+
+<nav id="article-nav">
+  
+  
+    <a  href="/2017/09/26/重定向对象redirect/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">重定向对象redirect</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
 
 
   
 </article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#首先"><span class="toc-number">1.</span> <span class="toc-text">首先</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#环境变量进配置："><span class="toc-number">2.</span> <span class="toc-text">环境变量进配置：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#几个命令："><span class="toc-number">3.</span> <span class="toc-text">几个命令：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#root密码进不去"><span class="toc-number">4.</span> <span class="toc-text">root密码进不去</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改root密码"><span class="toc-number">5.</span> <span class="toc-text">修改root密码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#退出去重新登录一下试试看："><span class="toc-number">6.</span> <span class="toc-text">退出去重新登录一下试试看：</span></a></li></ol>
+</div>
+<style>
+    .left-col .switch-btn {
+        display: none;
+    }
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+            $(".switch-btn, .switch-area").fadeOut(300);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+            $(".switch-btn, .switch-area").fadeIn(500);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+        $(".switch-btn, .switch-area").show();
+    }
+</script>
+
 
 
 
@@ -385,6 +450,39 @@
     
 
 
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a  href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a  href="/2017/09/26/重定向对象redirect/" title="下一篇: 重定向对象redirect">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/10/25/windows下修改MySQL5.7.11的root密码/">Windows下修改MySQL5.7.11的root密码</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/26/重定向对象redirect/">重定向对象redirect</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/26/Flask框架-debug模式/">Flask框架-debug模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/19/分组密码-DES算法/">分组密码--DES算法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/19/分组密码/">分组密码</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/19/序列密码-A5-1算法/">序列密码--A5-1算法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/18/序列密码/">序列密码</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/18/密码学简介/">密码学简介</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/07/博客主题使用跟功能添加/">博客主题使用跟功能添加</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/07/python代码优化技巧/">python代码优化技巧</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/07/hexo博客主题部分设定添加/">hexo博客主题部分--标签</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/04/python中的汉诺塔递归算法/">python中的汉诺塔递归算法</a></li></ul>
+    <script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        // $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#toc, .switch-btn, .switch-area").toggle();
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+                $(".switch-btn, .switch-area").fadeToggle(300);
+            }
+        })
+    </script>
 
 
 
