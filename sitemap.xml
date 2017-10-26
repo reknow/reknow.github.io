@@ -3,13 +3,13 @@
   
     
     <entry>
-      <title><![CDATA[Windows下修改MySQL5.7.11的root密码]]></title>
+      <title><![CDATA[Windows下修改MySQL5.7.11(以上)的root密码]]></title>
       <url>/2017/10/25/windows%E4%B8%8B%E4%BF%AE%E6%94%B9MySQL5.7.11%E7%9A%84root%E5%AF%86%E7%A0%81/</url>
-      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>修改mysql的root密码：</strong><br>mysql的最新版本5.7.11安装后除了第一次启动服务root账户正确，以后启动root都显示密码错误。对待这种情况应该怎么解决呢？<br><a id="more"></a></excerpt></p>
+      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>修改mysql的root密码：</strong><br>mysql的最新版本5.7.18安装后除了第一次启动服务root账户正确，以后启动root都显示密码错误。对待这种情况应该怎么解决呢？<br><a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
 
 
-<h2 id="首先"><a href="#首先" class="headerlink" title="首先"></a>首先</h2><p>到mysql的官网下载最新的5.7.11版本的mysql，按照教程安装好，一般默认在C盘的Program Files文件夹里，mysql的data文件在C盘的Program Data文件夹里。</p>
+<h2 id="首先"><a href="#首先" class="headerlink" title="首先"></a>首先</h2><p>到mysql的官网下载最新的5.7.18版本的mysql，按照教程安装好，一般默认在C盘的Program Files文件夹里，mysql的数据文件在C盘的Program Data文件夹里。</p>
 <h2 id="环境变量进配置："><a href="#环境变量进配置：" class="headerlink" title="环境变量进配置："></a>环境变量进配置：</h2><p><img src="http://upload-images.jianshu.io/upload_images/6755082-ad18aefd6d56f3d5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
 <h2 id="几个命令："><a href="#几个命令：" class="headerlink" title="几个命令："></a>几个命令：</h2><pre><code>安装 MySQL 服务: mysqld --install
 
@@ -18,16 +18,22 @@
 停止: net stop MySQL
 
 卸载: sc delete MySQL，mysqld -remove
+
+初始化data文件： mysqld --initialize
 </code></pre><p>命令行安装也可以，注意：命令行窗口一定要用管理员模式打开，来到%MYSQL_HOME%\bin;这个目录下，<br>a.安装服务：mysqld –install。<br>b.启动服务 net start MySQL</p>
+<h2 id="登录mysql"><a href="#登录mysql" class="headerlink" title="登录mysql"></a>登录mysql</h2><ul>
+<li>输入命令 mysql -uroot -p 回车，输入密码，按理说初次登录是没有密码的，直接回车即可登录，然而事实上，随机分配了密码，在你的文件中搜索 .err后缀的文件，以记事本方式打开，你会看到下图<br><img src="http://upload-images.jianshu.io/upload_images/6755082-b7795533f4c2d785.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></li>
+</ul>
 <h2 id="root密码进不去"><a href="#root密码进不去" class="headerlink" title="root密码进不去"></a>root密码进不去</h2><ul>
 <li>启动成功了，（安装在默认C盘的Program Files文件夹里的可以直接在命令行里输入mysql的登录指令，没有安装在默认C盘的，这时候必须先进入到mysql文件夹的bin文件夹下）输入命令mysql -uroot -p 回车（这是进入mysql的root账户命令）</li>
 <li>输入密码，显示错误ERROR 1045 (28000): Access denied for user ‘root’@’localhost’ (using password: YES)，看着上面说的，输入YES就好了，很开心，以为发现了很激动的信息，就理所当然的输入了YES等待进去，别天真了，没任何作用。这时候无论怎么输密码都是显示ERROR 1045，没办法只有重置密码。</li>
+<li>把data文件夹删掉，用mysqld –initialize 初始化data目录即可。删不掉data的时候，把任务管理器打开kill掉mysqld进程,其他启动或者关闭服务失败的时候一样做法。）</li>
 </ul>
 <h2 id="修改root密码"><a href="#修改root密码" class="headerlink" title="修改root密码"></a>修改root密码</h2><ul>
 <li>关闭服务net stop MySQL，用安全模式打开，mysqld –skip-grant-tables。这个时候，光标会一直闪。注意，千万别急按回车或者关闭，这时候千万不要动，打开另一个命令行窗口。（安装在默认C盘的Program Files文件夹里的可以直接在命令行里输入mysql的登录指令，没有安装在默认C盘的，这时候必须先进入到mysql文件夹的bin文件夹下）登录 mysql -u root -p密码为空,直接回车；就可以进去了。然后use mysql;</li>
 <li>（可能先前的版本密码的抬头是password，5.7.11是 authentication_string,可以select * from user,查看一下）</li>
 <li>(老版本)update user set password=password(“123456”) where user=”root”;</li>
-<li>（5.7.11）update user set authentication_string=password(“123456”) where user=”root”;</li>
+<li>（5.7.11以上版本）update user set authentication_string=password(“123456”) where user=”root”;</li>
 <li>最后，flush privileges;就OK了。</li>
 </ul>
 <p><img src="http://upload-images.jianshu.io/upload_images/6755082-6046f76a8065e211.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
@@ -430,52 +436,6 @@ if __name__ == &apos;__main__&apos;:
     </entry>
     
     <entry>
-      <title><![CDATA[hexo博客主题部分--标签]]></title>
-      <url>/2017/07/07/hexo%E5%8D%9A%E5%AE%A2%E4%B8%BB%E9%A2%98%E9%83%A8%E5%88%86%E8%AE%BE%E5%AE%9A%E6%B7%BB%E5%8A%A0/</url>
-      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>hexo博客主题部分–标签：</strong><br>标签作为主题里面一个很重要的组成部分，它的文件配置等等，我想这篇文章应该可以帮到你<br><a id="more"></a></excerpt></p>
-<p><the rest="" of="" contents="" |="" 余下全文=""></the></p>
-<h1 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h1><p>在你的G:\Hexo\source里面新建一个文件夹，命名为tags。新建命令如下：</p>
-<pre><code>$ hexo new page &quot;tags&quot;
-</code></pre><h1 id="第二步"><a href="#第二步" class="headerlink" title="第二步"></a>第二步</h1><p>编辑刚新建的页面，将页面的类型设置为 tags ，主题将自动为这个页面显示标签云。页面内容如下：</p>
-<pre><code>title： Tagcloud
-data： 2017-07-07 12:12:12
-type： &quot;tages&quot;
-————
-</code></pre><p>注意一下如果，如果你的blog启动了多说、畅言这些评论，默认的页面都会出现评论，要是想关闭的话，就把添加comments，把它的值设置为false。设置如下：</p>
-<pre><code>title： Tagcloud
-data： 2017-07-07 12:12:12
-type： &quot;tages&quot;
-comment: false
-————
-</code></pre><h1 id="第三步"><a href="#第三步" class="headerlink" title="第三步"></a>第三步</h1><p>在主题配置文件中添加配置，如下：</p>
-<pre><code>menu:
-  #主页: /archives
-  所有文章: /archives
-  网络安全: /
-  密码学: /misc
-  计算机语言: /python
-  关于我: /about
-  tags: /tags
-</code></pre><p>要是标签在小目录里就去小目录里面添加配置命令就好了。</p>
-<p>看一下我的blog标签效果：<br><img src="http://upload-images.jianshu.io/upload_images/6755082-70bcdbb6c1a915e6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-]]></content>
-      
-        <categories>
-            
-            <category> know </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> hexo </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[python代码优化技巧]]></title>
       <url>/2017/07/07/python%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96%E6%8A%80%E5%B7%A7/</url>
       <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>python代码优化技巧：</strong><br>写个美美的代码还是很重要的，这个将来特别会体现在工作中怎么优化代码呢……<br><a id="more"></a></excerpt></p>
@@ -628,6 +588,52 @@ a = [w for w in list]
         <tags>
             
             <tag> python </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[hexo博客主题部分--标签]]></title>
+      <url>/2017/07/07/hexo%E5%8D%9A%E5%AE%A2%E4%B8%BB%E9%A2%98%E9%83%A8%E5%88%86%E8%AE%BE%E5%AE%9A%E6%B7%BB%E5%8A%A0/</url>
+      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>hexo博客主题部分–标签：</strong><br>标签作为主题里面一个很重要的组成部分，它的文件配置等等，我想这篇文章应该可以帮到你<br><a id="more"></a></excerpt></p>
+<p><the rest="" of="" contents="" |="" 余下全文=""></the></p>
+<h1 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h1><p>在你的G:\Hexo\source里面新建一个文件夹，命名为tags。新建命令如下：</p>
+<pre><code>$ hexo new page &quot;tags&quot;
+</code></pre><h1 id="第二步"><a href="#第二步" class="headerlink" title="第二步"></a>第二步</h1><p>编辑刚新建的页面，将页面的类型设置为 tags ，主题将自动为这个页面显示标签云。页面内容如下：</p>
+<pre><code>title： Tagcloud
+data： 2017-07-07 12:12:12
+type： &quot;tages&quot;
+————
+</code></pre><p>注意一下如果，如果你的blog启动了多说、畅言这些评论，默认的页面都会出现评论，要是想关闭的话，就把添加comments，把它的值设置为false。设置如下：</p>
+<pre><code>title： Tagcloud
+data： 2017-07-07 12:12:12
+type： &quot;tages&quot;
+comment: false
+————
+</code></pre><h1 id="第三步"><a href="#第三步" class="headerlink" title="第三步"></a>第三步</h1><p>在主题配置文件中添加配置，如下：</p>
+<pre><code>menu:
+  #主页: /archives
+  所有文章: /archives
+  网络安全: /
+  密码学: /misc
+  计算机语言: /python
+  关于我: /about
+  tags: /tags
+</code></pre><p>要是标签在小目录里就去小目录里面添加配置命令就好了。</p>
+<p>看一下我的blog标签效果：<br><img src="http://upload-images.jianshu.io/upload_images/6755082-70bcdbb6c1a915e6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+]]></content>
+      
+        <categories>
+            
+            <category> know </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> hexo </tag>
             
         </tags>
         
