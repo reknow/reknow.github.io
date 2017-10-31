@@ -3,6 +3,34 @@
   
     
     <entry>
+      <title><![CDATA[ERROR 1820 (HY000) You must reset your password]]></title>
+      <url>/2017/10/28/mysql--ERROR%EF%BC%881820%EF%BC%89%E5%AF%86%E7%A0%81%E9%97%AE%E9%A2%98/</url>
+      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>登录mysql的root账户后不能进行其他操作：</strong><br>mysql好难弄啊，最近弄好了root密码问题，现在又出来个root账户进入后不能进行操作，到底怎么解决呢，来看看吧。<br><a id="more"></a></excerpt></p>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+
+<p>非常诡异啊，明明用密码登陆进去了，怎么还提示需要密码。什么操作都不许<br>参考官方的一个文档，见<a href="http://dev.mysql.com/doc/refman/5.6/en/alter-user.html。" target="_blank" rel="external">http://dev.mysql.com/doc/refman/5.6/en/alter-user.html。</a>如下操作后就ok了： </p>
+<p>mysql&gt; create database school;<br>ERROR 1820 (HY000): You must SET PASSWORD before executing this statement<br>mysql&gt; SET PASSWORD = PASSWORD(‘123456’);<br>Query OK, 0 rows affected (0.03 sec) </p>
+<p>mysql&gt; create database yan1;<br>Query OK, 1 row affected (0.00 sec) </p>
+<p>好了问题解决，现在继续操作你的mysql吧。</p>
+</the>]]></content>
+      
+        <categories>
+            
+            <category> know </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> mysql </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Windows下修改MySQL5.7.11(以上)的root密码]]></title>
       <url>/2017/10/25/windows%E4%B8%8B%E4%BF%AE%E6%94%B9MySQL5.7.11%E7%9A%84root%E5%AF%86%E7%A0%81/</url>
       <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>修改mysql的root密码：</strong><br>mysql的最新版本5.7.18安装后除了第一次启动服务root账户正确，以后启动root都显示密码错误。对待这种情况应该怎么解决呢？<br><a id="more"></a></excerpt></p>
@@ -27,7 +55,7 @@
 <h2 id="root密码进不去"><a href="#root密码进不去" class="headerlink" title="root密码进不去"></a>root密码进不去</h2><ul>
 <li>启动成功了，（安装在默认C盘的Program Files文件夹里的可以直接在命令行里输入mysql的登录指令，没有安装在默认C盘的，这时候必须先进入到mysql文件夹的bin文件夹下）输入命令mysql -uroot -p 回车（这是进入mysql的root账户命令）</li>
 <li>输入密码，显示错误ERROR 1045 (28000): Access denied for user ‘root’@’localhost’ (using password: YES)，看着上面说的，输入YES就好了，很开心，以为发现了很激动的信息，就理所当然的输入了YES等待进去，别天真了，没任何作用。这时候无论怎么输密码都是显示ERROR 1045，没办法只有重置密码。</li>
-<li>把data文件夹删掉，用mysqld –initialize 初始化data目录即可。删不掉data的时候，把任务管理器打开kill掉mysqld进程,其他启动或者关闭服务失败的时候一样做法。）</li>
+<li>把data文件夹删掉，用mysqld –initialize（两个‘-’）不行的话用（mysqld –initialize-insecure这个命令就可以了。也是两个‘-’） 初始化data目录即可。删不掉data的时候，把任务管理器打开kill掉mysqld进程,其他启动或者关闭服务失败的时候一样做法。）</li>
 </ul>
 <h2 id="修改root密码"><a href="#修改root密码" class="headerlink" title="修改root密码"></a>修改root密码</h2><ul>
 <li>关闭服务net stop MySQL，用安全模式打开，mysqld –skip-grant-tables。这个时候，光标会一直闪。注意，千万别急按回车或者关闭，这时候千万不要动，打开另一个命令行窗口。（安装在默认C盘的Program Files文件夹里的可以直接在命令行里输入mysql的登录指令，没有安装在默认C盘的，这时候必须先进入到mysql文件夹的bin文件夹下）登录 mysql -u root -p密码为空,直接回车；就可以进去了。然后use mysql;</li>
