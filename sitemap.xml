@@ -38,25 +38,9 @@
             &lt;div id=&quot;zhiding&quot; class=&quot;time&quot;&gt;置顶&lt;/div&gt;
                 &lt;article class=&quot;message&quot; id=&quot;firstMessage&quot;&gt;现场直播&lt;/article&gt;
         &lt;/div&gt;
-        &lt;ul id=&quot;show&quot;&gt;
-     {% for i in photo %}
-             <li>
-             <div class="patch">
-               <div class="patch_on">
-              <div class="time_info">
-               <strong>{{ i.create_time }}</strong>
-              </div>
-             <div class="center">
-           <img src="{{ url_for('static', filename = 'image/' + i.picture_path) }}" height="446" width="594" class="center_img">
-            <p>{{ i.content }}</p>
-            </div>
-            </div>
-             </div>
-           </li>
-           <p>{% endfor %}&lt;/p&gt;               
-
-
-        &lt;/ul&gt;
+        &lt;ul id=&quot;show&quot;&gt;          
+</code></pre><p><img src="https://upload-images.jianshu.io/upload_images/6755082-a4dd847bc6dfc16a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>这段前端代码老是不显示，所以就贴图放在这了</p>
+<pre><code>        &lt;/ul&gt;
         &lt;div class=&quot;qidai&quot;&gt;内容已经加载完毕，敬请期待更多内容&lt;/div&gt;
     &lt;/div&gt;
 &lt;/div&gt;
@@ -82,7 +66,7 @@
 
 &lt;/script&gt;
 &lt;/html&gt;
-</p></code></pre><p>这里用到了一些前端的js文件，是一些同学帮我弄得，本来他给我写了一些json代码，无奈wo太笨了，json一时半会没学会，也就用了那种把图片信息存储进数据库的笨办法 o(TωT)o ，好了，下面再贴上直播主页的功能代码吧。</p>
+</code></pre><p>这里用到了一些前端的js文件，是一些同学帮我弄得，本来他给我写了一些json代码，无奈wo太笨了，json一时半会没学会，也就用了那种把图片信息存储进数据库的笨办法 o(TωT)o ，好了，下面再贴上直播主页的功能代码吧。</p>
 <p>sc.py</p>
 <pre><code># 直播首页
 @app.route(&apos;/&apos;)
@@ -93,72 +77,6 @@ content = {
 }
 return render_template(&apos;test.html&apos;, **content)
 </code></pre><p>到这里就没什么要说的了，代码也不详细一一解释了，我觉得，自己慢慢探索出代码的意义会更好。<br>总体看       哇！写的很少，代码很多，果然我还是好懒哦(ㅍ_ㅍ)</p>
-</the>]]></content>
-      
-        <categories>
-            
-            <category> technology </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> flask </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[用flask写图文直播网页（四）]]></title>
-      <url>/2018/05/04/%E7%94%A8flask%E5%86%99%E5%9B%BE%E6%96%87%E7%9B%B4%E6%92%AD%EF%BC%88%E5%9B%9B%EF%BC%89/</url>
-      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>图文直播</strong><br>图文发布可是重中之重的啊，下面我们来一起实现图文发布的功能吧..(ノ￣▽￣)<br><a id="more"></a></excerpt></p>
-<the rest="" of="" contents="" |="" 余下全文="">
-
-<p>前面已经实现了管理员的登录、登出和注销功能，下面来实现图片和文字的上传和图文管理。<br>实现之前，的先把前端页面主体部分的模型做出来</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/6755082-38ab64491eb926a9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图文上传界面"><br>前端的一些样式可以自己随便做这里不贴代码了</p>
-<p>###实现图文发布<br>首先的在static目录下建一个image文件夹把需要上传的图片存储在里面。然后获取图片的名字信息，和文字一起保存在数据库中。</p>
-<p>sc.py</p>
-<pre><code>#判断文件后缀名是否是图片类型文件
-UPLOAD_FOLDER = &apos;./static/image&apos;
-ALLOWED_EXTENSIONS = [&apos;png&apos;, &apos;jpg&apos;, &apos;jpeg&apos;, &apos;gif&apos;]
-app = Flask(__name__)
-
-#生成随机密钥
-app.config[&apos;UPLOAD_FOLDER&apos;] = UPLOAD_FOLDER
-app.config[&apos;SECRET_KEY&apos;] = os.urandom(24)
-app.config.from_object(config)
-db.init_app(app)
-
-def allowed_file(filename):
-    return &apos;.&apos; in filename and filename.rsplit(&apos;.&apos;, 1)[1] in ALLOWED_EXTENSIONS
-
-# 发布图文
-@app.route(&apos;/picture/&apos;, methods=[&apos;GET&apos;, &apos;POST&apos;])
-def upload_file():
-admin_id = session.get(&apos;user_id&apos;)
-if admin_id:
-    if request.method == &apos;GET&apos;:
-        return render_template(&apos;picture.html&apos;)
-    else:
-        file = request.files[&apos;file&apos;]
-        content = request.form.get(&apos;content&apos;)
-        if file:
-            if allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                file.save(os.path.join(app.config[&apos;UPLOAD_FOLDER&apos;], filename))
-            else:
-                return u&apos;请按要求重新选择要上传的文件！&apos;
-        else:
-            pass
-        photo1 = Article(content = content, picture_path = file.filename)
-        db.session.add(photo1)
-        db.session.commit()
-        return redirect(url_for(&apos;index&apos;))
-else:
-    return redirect(url_for(&apos;login_a&apos;))
-</code></pre><p>这上面的代码很大一部分来自于flask官方网站的图片上传部分，这是我自己添加了图文一起上传，只上传图片和只上传文字三个部分。</p>
 </the>]]></content>
       
         <categories>
@@ -277,6 +195,72 @@ if admin3_id:
 else:
     return redirect(url_for(&apos;login_a&apos;))
 </code></pre><p>一开始本来打算做个图文一起上传的，结果想想觉得图文直播大多数都是图片居多，而且很多时候下面并没有解释的文字，所以我觉得还是图片跟文字分开，各改各的。这里图片在后台显示是根据数据库中存储的图片名字，然后再去image文件中获取对应的图片。</p>
+</the>]]></content>
+      
+        <categories>
+            
+            <category> technology </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> flask </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[用flask写图文直播网页（四）]]></title>
+      <url>/2018/05/04/%E7%94%A8flask%E5%86%99%E5%9B%BE%E6%96%87%E7%9B%B4%E6%92%AD%EF%BC%88%E5%9B%9B%EF%BC%89/</url>
+      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>图文直播</strong><br>图文发布可是重中之重的啊，下面我们来一起实现图文发布的功能吧..(ノ￣▽￣)<br><a id="more"></a></excerpt></p>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<p>前面已经实现了管理员的登录、登出和注销功能，下面来实现图片和文字的上传和图文管理。<br>实现之前，的先把前端页面主体部分的模型做出来</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/6755082-38ab64491eb926a9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图文上传界面"><br>前端的一些样式可以自己随便做这里不贴代码了</p>
+<p>###实现图文发布<br>首先的在static目录下建一个image文件夹把需要上传的图片存储在里面。然后获取图片的名字信息，和文字一起保存在数据库中。</p>
+<p>sc.py</p>
+<pre><code>#判断文件后缀名是否是图片类型文件
+UPLOAD_FOLDER = &apos;./static/image&apos;
+ALLOWED_EXTENSIONS = [&apos;png&apos;, &apos;jpg&apos;, &apos;jpeg&apos;, &apos;gif&apos;]
+app = Flask(__name__)
+
+#生成随机密钥
+app.config[&apos;UPLOAD_FOLDER&apos;] = UPLOAD_FOLDER
+app.config[&apos;SECRET_KEY&apos;] = os.urandom(24)
+app.config.from_object(config)
+db.init_app(app)
+
+def allowed_file(filename):
+    return &apos;.&apos; in filename and filename.rsplit(&apos;.&apos;, 1)[1] in ALLOWED_EXTENSIONS
+
+# 发布图文
+@app.route(&apos;/picture/&apos;, methods=[&apos;GET&apos;, &apos;POST&apos;])
+def upload_file():
+admin_id = session.get(&apos;user_id&apos;)
+if admin_id:
+    if request.method == &apos;GET&apos;:
+        return render_template(&apos;picture.html&apos;)
+    else:
+        file = request.files[&apos;file&apos;]
+        content = request.form.get(&apos;content&apos;)
+        if file:
+            if allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config[&apos;UPLOAD_FOLDER&apos;], filename))
+            else:
+                return u&apos;请按要求重新选择要上传的文件！&apos;
+        else:
+            pass
+        photo1 = Article(content = content, picture_path = file.filename)
+        db.session.add(photo1)
+        db.session.commit()
+        return redirect(url_for(&apos;index&apos;))
+else:
+    return redirect(url_for(&apos;login_a&apos;))
+</code></pre><p>这上面的代码很大一部分来自于flask官方网站的图片上传部分，这是我自己添加了图文一起上传，只上传图片和只上传文字三个部分。</p>
 </the>]]></content>
       
         <categories>
