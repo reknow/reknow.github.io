@@ -3,6 +3,72 @@
   
     
     <entry>
+      <title><![CDATA[用flask写图文直播网页（二）]]></title>
+      <url>/2018/05/04/%E7%94%A8flask%E5%86%99%E5%9B%BE%E6%96%87%E7%9B%B4%E6%92%AD%EF%BC%88%E4%BA%8C%EF%BC%89/</url>
+      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>图文直播</strong><br>flask框架用起来确实很方便，特别适合新手，下面就来看看flask做一个图文直播网页吧..<br><a id="more"></a></excerpt></p>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<p>其实我也是新手，框架结构什么的还不懂的怎么弄，然后我放的就比较简单</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/6755082-2ccd30b66533ee4b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="项目结构"></p>
+<p>其中，static里面放css跟images、image文件，image里面放的是图文直播内容的图片，images里面放的是图文直播标题的背景图。</p>
+<p>首先说一下后台主界面吧，后台样式是从bootstrip上复制的基本模本，然后自己稍加改动形成的。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/6755082-3c2be088c4ea59ee.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="后台页面样式"></p>
+<p>这样后台做起来会更简单点，直接从bootstrip上找一个自己喜欢的后台管理模板，然后copy到templates下的base.html里就行了，然后以此作为父后台模板。</p>
+<p>其他的页面可以继承父模板的样式。<br>base.html中还会预留一下一些主体和页面标题等一些接口，这样其他的页面可以在继承了父模板的页面上随心所欲的改动其他部分</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/6755082-ca6716887957dbff.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="后台主界面代码展示"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/6755082-85d684bdcf738f64.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="管理员登录界面"></p>
+<p>然后通过这种方法再加上CSS代码的一些控制，你就可以把管理界面改成自己喜欢的样子（好像我做的有点low啊  0.0，css学的不好，伤心一秒T.T）</p>
+<p>最后再来贴一个图文管理界面代码，后面再来解释这些。</p>
+<pre><code>{% extends 'base.html' %}
+{% block yemian %}图文管理界面{% endblock %}
+    {% block main %}
+        <div class="row">
+            <form action="" enctype="multipart/form-data" method="POST" class="form-horizontal">
+            <table class="table table-hover">
+                <tr>
+                    <th>序号</th>
+                    <th>图片</th>
+                    <th>文章</th>
+                    <th>提交时间</th>
+                    <th>操作</th>
+                </tr>
+                    {% for item in photo %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td width="15%">
+                            <img src="{{ url_for('static', filename = 'image/' + item.picture_path) }}" alt="" height="70" width="100">
+                        </td>
+                        <td width="50%" height="87">{{ item.content }}</td>
+                        <td>{{ item.create_time }}</td>
+                        <td>
+                            <a href="{{ url_for('detail_a', photo_id = item.id) }}" class="btn btn-default btn-xs" title="查看"><i class="fa fa-search"></i></a>
+                            <a href="{{ url_for('change_a', photo_id = item.id) }}" class="btn btn-default btn-xs" title="修改"><i class="fa fa-pencil"></i></a>
+                            <a href="{{ url_for('remove', content=item.content) }}" class="btn btn-default btn-xs" title="删除"><i class="fa fa-trash"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+            </table>
+        </form>
+    </div>
+    {% endblock %}
+</code></pre></the>]]></content>
+      
+        <categories>
+            
+            <category> technology </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> flask </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[用flask写图文直播网页（一）]]></title>
       <url>/2018/05/04/%E7%94%A8flask%E5%86%99%E5%9B%BE%E6%96%87%E7%9B%B4%E6%92%AD%EF%BC%88%E4%B8%80%EF%BC%89/</url>
       <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>图文直播</strong><br>flask框架用起来确实很方便，特别适合新手，下面就来看看flask做一个图文直播网页吧..<br><a id="more"></a></excerpt></p>
@@ -11,8 +77,8 @@
 <blockquote>
 <p>这个东西也可以说是我初学flask的成果展示吧（有点菜，勿喷哦0.0）<br>先上一波最终展示图吧</p>
 </blockquote>
-<p><img src="https://upload-images.jianshu.io/upload_images/6755082-29160d05bfe34527.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="标题"></p>
-<p><img src="https://upload-images.jianshu.io/upload_images/6755082-8425e87a66187f7e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="展示"></p>
+<p>　　　　<img src="https://upload-images.jianshu.io/upload_images/6755082-29160d05bfe34527.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="标题"></p>
+<p>　　　<img src="https://upload-images.jianshu.io/upload_images/6755082-8425e87a66187f7e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="展示"></p>
 <blockquote>
 <p>既然是图文直播，那么后台的管理肯定是不能少的，再来看看后台的管理模式吧</p>
 </blockquote>
@@ -498,6 +564,52 @@ if __name__ == &apos;__main__&apos;:
     </entry>
     
     <entry>
+      <title><![CDATA[hexo博客主题部分--标签]]></title>
+      <url>/2017/07/07/hexo%E5%8D%9A%E5%AE%A2%E4%B8%BB%E9%A2%98%E9%83%A8%E5%88%86%E8%AE%BE%E5%AE%9A%E6%B7%BB%E5%8A%A0/</url>
+      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>hexo博客主题部分–标签：</strong><br>标签作为主题里面一个很重要的组成部分，它的文件配置等等，我想这篇文章应该可以帮到你<br><a id="more"></a></excerpt></p>
+<p><the rest="" of="" contents="" |="" 余下全文=""></the></p>
+<h1 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h1><p>在你的G:\Hexo\source里面新建一个文件夹，命名为tags。新建命令如下：</p>
+<pre><code>$ hexo new page &quot;tags&quot;
+</code></pre><h1 id="第二步"><a href="#第二步" class="headerlink" title="第二步"></a>第二步</h1><p>编辑刚新建的页面，将页面的类型设置为 tags ，主题将自动为这个页面显示标签云。页面内容如下：</p>
+<pre><code>title： Tagcloud
+data： 2017-07-07 12:12:12
+type： &quot;tages&quot;
+————
+</code></pre><p>注意一下如果，如果你的blog启动了多说、畅言这些评论，默认的页面都会出现评论，要是想关闭的话，就把添加comments，把它的值设置为false。设置如下：</p>
+<pre><code>title： Tagcloud
+data： 2017-07-07 12:12:12
+type： &quot;tages&quot;
+comment: false
+————
+</code></pre><h1 id="第三步"><a href="#第三步" class="headerlink" title="第三步"></a>第三步</h1><p>在主题配置文件中添加配置，如下：</p>
+<pre><code>menu:
+  #主页: /archives
+  所有文章: /archives
+  网络安全: /
+  密码学: /misc
+  计算机语言: /python
+  关于我: /about
+  tags: /tags
+</code></pre><p>要是标签在小目录里就去小目录里面添加配置命令就好了。</p>
+<p>看一下我的blog标签效果：<br><img src="http://upload-images.jianshu.io/upload_images/6755082-70bcdbb6c1a915e6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+]]></content>
+      
+        <categories>
+            
+            <category> know </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> hexo </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[python代码优化技巧]]></title>
       <url>/2017/07/07/python%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96%E6%8A%80%E5%B7%A7/</url>
       <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>python代码优化技巧：</strong><br>写个美美的代码还是很重要的，这个将来特别会体现在工作中怎么优化代码呢……<br><a id="more"></a></excerpt></p>
@@ -650,52 +762,6 @@ a = [w for w in list]
         <tags>
             
             <tag> python </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[hexo博客主题部分--标签]]></title>
-      <url>/2017/07/07/hexo%E5%8D%9A%E5%AE%A2%E4%B8%BB%E9%A2%98%E9%83%A8%E5%88%86%E8%AE%BE%E5%AE%9A%E6%B7%BB%E5%8A%A0/</url>
-      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>hexo博客主题部分–标签：</strong><br>标签作为主题里面一个很重要的组成部分，它的文件配置等等，我想这篇文章应该可以帮到你<br><a id="more"></a></excerpt></p>
-<p><the rest="" of="" contents="" |="" 余下全文=""></the></p>
-<h1 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h1><p>在你的G:\Hexo\source里面新建一个文件夹，命名为tags。新建命令如下：</p>
-<pre><code>$ hexo new page &quot;tags&quot;
-</code></pre><h1 id="第二步"><a href="#第二步" class="headerlink" title="第二步"></a>第二步</h1><p>编辑刚新建的页面，将页面的类型设置为 tags ，主题将自动为这个页面显示标签云。页面内容如下：</p>
-<pre><code>title： Tagcloud
-data： 2017-07-07 12:12:12
-type： &quot;tages&quot;
-————
-</code></pre><p>注意一下如果，如果你的blog启动了多说、畅言这些评论，默认的页面都会出现评论，要是想关闭的话，就把添加comments，把它的值设置为false。设置如下：</p>
-<pre><code>title： Tagcloud
-data： 2017-07-07 12:12:12
-type： &quot;tages&quot;
-comment: false
-————
-</code></pre><h1 id="第三步"><a href="#第三步" class="headerlink" title="第三步"></a>第三步</h1><p>在主题配置文件中添加配置，如下：</p>
-<pre><code>menu:
-  #主页: /archives
-  所有文章: /archives
-  网络安全: /
-  密码学: /misc
-  计算机语言: /python
-  关于我: /about
-  tags: /tags
-</code></pre><p>要是标签在小目录里就去小目录里面添加配置命令就好了。</p>
-<p>看一下我的blog标签效果：<br><img src="http://upload-images.jianshu.io/upload_images/6755082-70bcdbb6c1a915e6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-]]></content>
-      
-        <categories>
-            
-            <category> know </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> hexo </tag>
             
         </tags>
         
