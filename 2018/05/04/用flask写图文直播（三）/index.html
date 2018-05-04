@@ -7,19 +7,19 @@
   
   
   
-  <title>重定向对象redirect | reknow&#39;s blog</title>
+  <title>用flask写图文直播网页（三） | reknow&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="redirect重定向是一种特殊的响应，响应内容是URL，而不是包含html代码的字符串。">
+  <meta name="description" content="图文直播既然是图文直播，那肯定需要管理员身份来上传图文吧，那么管理员信息存放在哪呢，登录注销要怎么弄呢(｡･ω･｡)">
 <meta name="keywords" content="flask">
 <meta property="og:type" content="article">
-<meta property="og:title" content="重定向对象redirect">
-<meta property="og:url" content="http://reknow.dropsec.xyz/2017/09/26/重定向对象redirect/index.html">
+<meta property="og:title" content="用flask写图文直播网页（三）">
+<meta property="og:url" content="http://reknow.dropsec.xyz/2018/05/04/用flask写图文直播（三）/index.html">
 <meta property="og:site_name" content="reknow&#39;s blog">
-<meta property="og:description" content="redirect重定向是一种特殊的响应，响应内容是URL，而不是包含html代码的字符串。">
-<meta property="og:updated_time" content="2017-09-26T10:03:58.021Z">
+<meta property="og:description" content="图文直播既然是图文直播，那肯定需要管理员身份来上传图文吧，那么管理员信息存放在哪呢，登录注销要怎么弄呢(｡･ω･｡)">
+<meta property="og:updated_time" content="2018-05-04T02:04:04.106Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="重定向对象redirect">
-<meta name="twitter:description" content="redirect重定向是一种特殊的响应，响应内容是URL，而不是包含html代码的字符串。">
+<meta name="twitter:title" content="用flask写图文直播网页（三）">
+<meta name="twitter:description" content="图文直播既然是图文直播，那肯定需要管理员身份来上传图文吧，那么管理员信息存放在哪呢，登录注销要怎么弄呢(｡･ω･｡)">
   
     <link rel="alternative" href="/atom.xml" title="reknow&#39;s blog" type="application/atom+xml">
   
@@ -268,11 +268,11 @@
         </header>                
     </div>
 </nav>
-      <div class="body-wrap"><article id="post-重定向对象redirect" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-用flask写图文直播（三）" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a  href="/2017/09/26/重定向对象redirect/" class="article-date">
-      <time datetime="2017-09-26T09:30:02.000Z" itemprop="datePublished">2017-09-26</time>
+      <a  href="/2018/05/04/用flask写图文直播（三）/" class="article-date">
+      <time datetime="2018-05-04T01:56:02.000Z" itemprop="datePublished">2018-05-04</time>
 </a>
 
     </div>
@@ -286,7 +286,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      重定向对象redirect
+      用flask写图文直播网页（三）
     </h1>
   
 
@@ -312,67 +312,76 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p><excerpt in="" index="" |="" 首页摘要=""><br><strong>redirect</strong><br>重定向是一种特殊的响应，响应内容是URL，而不是包含html代码的字符串。<br><a id="more"></a></excerpt></p>
+        <p><excerpt in="" index="" |="" 首页摘要=""><br><strong>图文直播</strong><br>既然是图文直播，那肯定需要管理员身份来上传图文吧，那么管理员信息存放在哪呢，登录注销要怎么弄呢(｡･ω･｡)<br><a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
 
-<blockquote>
-<p>重定向是一种特殊的响应， 响应内容是URL，而不是包含HTML 代码的字符串。浏览器收到这种响应时， 会向重定向的URL 发起 GET 请求，显示页面的内容。</p>
-</blockquote>
-<p>　　下面是一段代码，正常运行时候都是显示“这是首页”</p>
-<pre><code>from flask import Flask
+<p>把基本的前端样式都弄好，然后就可以来实现它们的功能了哦（因为光有外表没有内涵是不行的嘛）(～￣▽￣)～ </p>
+<p>一步一步来</p>
+<p>###在mysql数据库中建表<br>由于小编使用的是mysql数据库（其他数据库都行，哪个熟练用哪个），接下来的先在mysql中建库（tuwen）、建两张表（admin、photo）admin用来存储管理员的账号密码，photo用来存储图片和文字信息。</p>
+<p>modle.py</p>
+<pre><code>from exts import db
+from datetime import datetime
 
-app = Flask(__name__)
+class Admin(db.Model):
+__tablename__ = &apos;admin&apos;
+id = db.Column(db.Integer, primary_key = True, autoincrement = True)
+telephone = db.Column(db.String(20), nullable = False)
+username = db.Column(db.String(100), nullable = False)
+password = db.Column(db.String(100), nullable = False)
 
-@app.route(&apos;/&apos;)
-def index():
-  return &apos;这是首页&apos;
-
-@app.route(&apos;/login/&apos;)
-def login():
-  return &apos;欢迎登录&apos;
-</code></pre><blockquote>
-<p>加上redirect函数后再次运行都会显示“欢迎登陆”，就是自动跳到登陆（login）界面去了</p>
-</blockquote>
-<pre><code>from flask import Flask,redirect,url_for
-
-app = Flask(__name__)
-
-@app.route(&apos;/&apos;)
-def index():
-  login_url = url_for(&apos;login&apos;)
-  return redirect(login_url)
-  return &apos;这是首页&apos;
-
-@app.route(&apos;/login/&apos;)
-def login():
-  return &apos;欢迎登录&apos;
-</code></pre><blockquote>
-<p>当用户访问某些网页时，如果他还没登录，我们往往会把网页 重定向 到登录页面，Flask 提供了 redirect 对象对其进行处理，我们对上面的代码做一点简单的改造，如果用户注册了，我们将网页重定向到首页。</p>
-</blockquote>
-<pre><code>from flask import Flask,redirect,url_for
-
-app = Flask(__name__)
-
-@app.route(&apos;/&apos;)
-def index():
-  login_url = url_for(&apos;login&apos;)
-  return redirect(login_url)
-  return &apos;这是首页&apos;
-
-@app.route(&apos;/login/&apos;)
-def login():
-  return &apos;欢迎登录&apos;
-
-@app.route(&apos;/message/&lt;a_login&gt;/&apos;)
-def message(a_login):
-  if a_login==&apos;1&apos;:
-    return &apos;欢迎查看资料信息&apos;
-  else:
-    return redirect(url_for(&apos;login&apos;))
-</code></pre><blockquote>
-<p>推荐使用url_for() 生成 URL，因为这个函数使用URL 映射生成 URL，从而保证URL 和定义的路由兼容，而且修改路由名字后依然可用。url_for()函数的第一个且唯一必须指定的参数是端点名，即路由的内部名字。 默认情况下，路由的端点是相应视图函数的名字。</p>
-</blockquote>
-</the>
+class Article(db.Model):
+__tablename__ = &apos;photo&apos;
+id = db.Column(db.Integer, primary_key = True, autoincrement = True)
+picture_path = db.Column(db.String(100), nullable = True)
+content = db.Column(db.Text, nullable = True)
+create_time = db.Column(db.DateTime, default = datetime.now)
+</code></pre><p>建完库跟表，下面就要进行数据库连接了</p>
+<pre><code>SQLALCHEMY_DATABASE_URI = &apos;mysql+pymysql://root:root@localhost:3306/tuwen?charset=utf8&apos;
+SQLALCHEMY_TRACK_MODIFICATIONS = True
+</code></pre><p>###实现登录功能<br>sc.py</p>
+<pre><code>  # 登录
+@app.route(&apos;/login/&apos;, methods = [&apos;POST&apos;, &apos;GET&apos;])
+def login_a():
+if request.method == &apos;GET&apos;:
+    return render_template(&apos;login.html&apos;)
+else:
+    telephone = request.form.get(&apos;telephone&apos;)
+    password = request.form.get(&apos;password&apos;)
+    user = Admin.query.filter(Admin.telephone == telephone, Admin.password == password).first()
+    if user:
+        session[&apos;user_id&apos;] = user.id
+        session.permanent = True
+        return redirect(url_for(&apos;upload_file&apos;))
+    else:
+        return u&apos;账号或密码输入错误，请确认后重新输入！&apos;
+</code></pre><p>###实现登出功能</p>
+<p>sc.py</p>
+<pre><code># 登出
+@app.route(&apos;/logout/&apos;)
+def logout_a():
+session.clear()
+return redirect(url_for(&apos;login_a&apos;))
+</code></pre><p>相比较登录，登出的代码就少的多，清除session缓存就行了</p>
+<p>###实现注销功能<br>sc.py</p>
+<pre><code># 注销
+@app.context_processor
+def my_context_processor():
+user_id = session.get(&apos;user_id&apos;)
+if user_id:
+    user = Admin.query.filter(Admin.id == user_id).first()
+    if user:
+        return {&apos;user&apos;: user}
+return {}
+</code></pre><p>最后不要忘记在父模板中连接对应的按钮，比如：<br>base.html</p>
+<pre><code>&lt;ul class=&quot;nav navbar-nav navbar-right&quot;&gt;
+                    {% if user %}
+                                <li><a href="#">管理员</a></li>
+                                <li><a href="{{ url_for('logout_a') }}">注销</a></li>
+                          {% else %}
+                                <li><a href="{{ url_for('login_a') }}">登录</a></li>
+                          {% endif %}
+&lt;/ul&gt;
+</code></pre></the>
       
     </div>
     
@@ -380,13 +389,13 @@ def message(a_login):
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a  href="/2017/09/26/重定向对象redirect/">重定向对象redirect</a></p>
+        <p><span>本文标题:</span><a  href="/2018/05/04/用flask写图文直播（三）/">用flask写图文直播网页（三）</a></p>
         <p><span>文章作者:</span><a  href="/" title="访问 reknow 的个人博客">reknow</a></p>
-        <p><span>发布时间:</span>2017年09月26日 - 17时30分</p>
-        <p><span>最后更新:</span>2017年09月26日 - 18时03分</p>
+        <p><span>发布时间:</span>2018年05月04日 - 09时56分</p>
+        <p><span>最后更新:</span>2018年05月04日 - 10时04分</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/09/26/重定向对象redirect/" title="重定向对象redirect">http://reknow.dropsec.xyz/2017/09/26/重定向对象redirect/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://reknow.dropsec.xyz/2017/09/26/重定向对象redirect/　　作者: reknow" title=""></span>
+            <span>原始链接:</span><a class="post-url" href="/2018/05/04/用flask写图文直播（三）/" title="用flask写图文直播网页（三）">http://reknow.dropsec.xyz/2018/05/04/用flask写图文直播（三）/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://reknow.dropsec.xyz/2018/05/04/用flask写图文直播（三）/　　作者: reknow" title=""></span>
         </p>
         <p>
             <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
@@ -397,18 +406,18 @@ def message(a_login):
 
 <nav id="article-nav">
   
-    <a  href="/2017/10/25/windows下修改MySQL5.7.11的root密码/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a  href="/2018/05/04/用flask写图文直播（五）/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption"><</strong>
       <div class="article-nav-title">
         
-          Windows下修改MySQL5.7.11(以上)的root密码
+          用flask写图文直播网页（五）
         
       </div>
     </a>
   
   
-    <a  href="/2017/09/26/Flask框架-debug模式/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Flask框架-debug模式</div>
+    <a  href="/2018/05/04/用flask写图文直播（二）/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">用flask写图文直播网页（二）</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -491,13 +500,13 @@ def message(a_login):
 
     <div class="scroll" id="post-nav-button">
         
-            <a  href="/2017/10/25/windows下修改MySQL5.7.11的root密码/" title="上一篇: Windows下修改MySQL5.7.11(以上)的root密码">
+            <a  href="/2018/05/04/用flask写图文直播（五）/" title="上一篇: 用flask写图文直播网页（五）">
                 <i class="fa fa-angle-left"></i>
             </a>
         
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
         
-            <a  href="/2017/09/26/Flask框架-debug模式/" title="下一篇: Flask框架-debug模式">
+            <a  href="/2018/05/04/用flask写图文直播（二）/" title="下一篇: 用flask写图文直播网页（二）">
                 <i class="fa fa-angle-right"></i>
             </a>
         

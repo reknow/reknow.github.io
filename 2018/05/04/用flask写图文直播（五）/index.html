@@ -7,19 +7,21 @@
   
   
   
-  <title>重定向对象redirect | reknow&#39;s blog</title>
+  <title>用flask写图文直播网页（五） | reknow&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="redirect重定向是一种特殊的响应，响应内容是URL，而不是包含html代码的字符串。">
+  <meta name="description" content="图文直播图文上传已经做好了，但是如果现在上传错误了咋办，这时候你就需要在后台做一个图文管理的界面了..">
 <meta name="keywords" content="flask">
 <meta property="og:type" content="article">
-<meta property="og:title" content="重定向对象redirect">
-<meta property="og:url" content="http://reknow.dropsec.xyz/2017/09/26/重定向对象redirect/index.html">
+<meta property="og:title" content="用flask写图文直播网页（五）">
+<meta property="og:url" content="http://reknow.dropsec.xyz/2018/05/04/用flask写图文直播（五）/index.html">
 <meta property="og:site_name" content="reknow&#39;s blog">
-<meta property="og:description" content="redirect重定向是一种特殊的响应，响应内容是URL，而不是包含html代码的字符串。">
-<meta property="og:updated_time" content="2017-09-26T10:03:58.021Z">
+<meta property="og:description" content="图文直播图文上传已经做好了，但是如果现在上传错误了咋办，这时候你就需要在后台做一个图文管理的界面了..">
+<meta property="og:image" content="http://reknow.dropsec.xyz/2018/05/04/用flask写图文直播（五）/%7B%7B%20url_for(%27static%27,%20filename%20=%20%27image/%27%20+%20item.picture_path)%20%7D%7D">
+<meta property="og:updated_time" content="2018-05-04T02:00:57.900Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="重定向对象redirect">
-<meta name="twitter:description" content="redirect重定向是一种特殊的响应，响应内容是URL，而不是包含html代码的字符串。">
+<meta name="twitter:title" content="用flask写图文直播网页（五）">
+<meta name="twitter:description" content="图文直播图文上传已经做好了，但是如果现在上传错误了咋办，这时候你就需要在后台做一个图文管理的界面了..">
+<meta name="twitter:image" content="http://reknow.dropsec.xyz/2018/05/04/用flask写图文直播（五）/%7B%7B%20url_for(%27static%27,%20filename%20=%20%27image/%27%20+%20item.picture_path)%20%7D%7D">
   
     <link rel="alternative" href="/atom.xml" title="reknow&#39;s blog" type="application/atom+xml">
   
@@ -268,11 +270,11 @@
         </header>                
     </div>
 </nav>
-      <div class="body-wrap"><article id="post-重定向对象redirect" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-用flask写图文直播（五）" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a  href="/2017/09/26/重定向对象redirect/" class="article-date">
-      <time datetime="2017-09-26T09:30:02.000Z" itemprop="datePublished">2017-09-26</time>
+      <a  href="/2018/05/04/用flask写图文直播（五）/" class="article-date">
+      <time datetime="2018-05-04T01:58:02.000Z" itemprop="datePublished">2018-05-04</time>
 </a>
 
     </div>
@@ -286,7 +288,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      重定向对象redirect
+      用flask写图文直播网页（五）
     </h1>
   
 
@@ -312,66 +314,104 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p><excerpt in="" index="" |="" 首页摘要=""><br><strong>redirect</strong><br>重定向是一种特殊的响应，响应内容是URL，而不是包含html代码的字符串。<br><a id="more"></a></excerpt></p>
+        <p><excerpt in="" index="" |="" 首页摘要=""><br><strong>图文直播</strong><br>图文上传已经做好了，但是如果现在上传错误了咋办，这时候你就需要在后台做一个图文管理的界面了..<br><a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
 
-<blockquote>
-<p>重定向是一种特殊的响应， 响应内容是URL，而不是包含HTML 代码的字符串。浏览器收到这种响应时， 会向重定向的URL 发起 GET 请求，显示页面的内容。</p>
-</blockquote>
-<p>　　下面是一段代码，正常运行时候都是显示“这是首页”</p>
-<pre><code>from flask import Flask
+<p>###实现图文管理功能<br>首先贴一下图文管理界面前端代码：<br>list-admin.html</p>
+<pre><code>{% extends 'base.html' %}
+{% block yemian %}图文管理界面{% endblock %}
+    {% block main %}
+    <div class="row">
+        <form action="" enctype="multipart/form-data" method="POST" class="form-horizontal">
+            <table class="table table-hover">
+                <tr>
+                    <th>序号</th>
+                    <th>图片</th>
+                    <th>文章</th>
+                    <th>提交时间</th>
+                    <th>操作</th>
+                </tr>
+                    {% for item in photo %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td width="15%">
+                            <img src="{{ url_for('static', filename = 'image/' + item.picture_path) }}" alt="" height="70" width="100">
+                        </td>
+                        <td width="50%" height="87">{{ item.content }}</td>
+                        <td>{{ item.create_time }}</td>
+                        <td>
+                            <a href="{{ url_for('detail_a', photo_id = item.id) }}" class="btn btn-default btn-xs" title="查看"><i class="fa fa-search"></i></a>
+                            <a href="{{ url_for('change_a', photo_id = item.id) }}" class="btn btn-default btn-xs" title="修改"><i class="fa fa-pencil"></i></a>
+                            <a href="{{ url_for('remove', content=item.content) }}" class="btn btn-default btn-xs" title="删除"><i class="fa fa-trash"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+            </table>
+        </form>
+    </div>
+    {% endblock %}
+</code></pre><p>####功能函数部分</p>
+<pre><code># 图文管理
+@app.route(&apos;/admin/list/&apos;, methods = [&apos;GET&apos;, &apos;POST&apos;])
+def list_a():
+admin2_id = session.get(&apos;user_id&apos;)
+if admin2_id:
+    if request.method == &apos;GET&apos;:
+        data_all = Article.query.order_by(&apos;-create_time&apos;).all()
+        items = {
+            &apos;photo&apos;: data_all
+        }
+        return render_template(&apos;list-admin.html&apos;, **items)
+else:
+    return redirect(url_for(&apos;login_a&apos;))
 
-app = Flask(__name__)
+# 删除图文
+@app.route(&apos;/remove/&apos;)
+def remove():
+content = request.args.get(&apos;content&apos;)
+photo1 = Article.query.filter(Article.content == content).first()
+db.session.delete(photo1)
+db.session.commit()
+return redirect(url_for(&apos;list_a&apos;))
 
-@app.route(&apos;/&apos;)
-def index():
-  return &apos;这是首页&apos;
+# 查看图文
+@app.route(&apos;/detail/&lt;photo_id&gt;/&apos;)
+def detail_a(photo_id):
+photo_model = Article.query.filter(Article.id == photo_id).first()
+return render_template(&apos;detail.html&apos;, photo = photo_model)
 
-@app.route(&apos;/login/&apos;)
-def login():
-  return &apos;欢迎登录&apos;
-</code></pre><blockquote>
-<p>加上redirect函数后再次运行都会显示“欢迎登陆”，就是自动跳到登陆（login）界面去了</p>
-</blockquote>
-<pre><code>from flask import Flask,redirect,url_for
+# 修改图文
+def allowed_file1(filename1):
+return &apos;.&apos; in filename1 and filename1.rsplit(&apos;.&apos;, 1)[1] in ALLOWED_EXTENSIONS
 
-app = Flask(__name__)
-
-@app.route(&apos;/&apos;)
-def index():
-  login_url = url_for(&apos;login&apos;)
-  return redirect(login_url)
-  return &apos;这是首页&apos;
-
-@app.route(&apos;/login/&apos;)
-def login():
-  return &apos;欢迎登录&apos;
-</code></pre><blockquote>
-<p>当用户访问某些网页时，如果他还没登录，我们往往会把网页 重定向 到登录页面，Flask 提供了 redirect 对象对其进行处理，我们对上面的代码做一点简单的改造，如果用户注册了，我们将网页重定向到首页。</p>
-</blockquote>
-<pre><code>from flask import Flask,redirect,url_for
-
-app = Flask(__name__)
-
-@app.route(&apos;/&apos;)
-def index():
-  login_url = url_for(&apos;login&apos;)
-  return redirect(login_url)
-  return &apos;这是首页&apos;
-
-@app.route(&apos;/login/&apos;)
-def login():
-  return &apos;欢迎登录&apos;
-
-@app.route(&apos;/message/&lt;a_login&gt;/&apos;)
-def message(a_login):
-  if a_login==&apos;1&apos;:
-    return &apos;欢迎查看资料信息&apos;
-  else:
-    return redirect(url_for(&apos;login&apos;))
-</code></pre><blockquote>
-<p>推荐使用url_for() 生成 URL，因为这个函数使用URL 映射生成 URL，从而保证URL 和定义的路由兼容，而且修改路由名字后依然可用。url_for()函数的第一个且唯一必须指定的参数是端点名，即路由的内部名字。 默认情况下，路由的端点是相应视图函数的名字。</p>
-</blockquote>
+@app.route(&apos;/change/&apos;, methods = [&apos;GET&apos;, &apos;POST&apos;])
+def change_a():
+admin3_id = session.get(&apos;user_id&apos;)
+if admin3_id:
+    if request.method == &apos;GET&apos;:
+        return render_template(&apos;change.html&apos;)
+    else:
+        file1 = request.files[&apos;file&apos;]
+        content1 = request.form.get(&apos;content&apos;)
+        photo_id = request.args.get(&apos;photo_id&apos;)
+        if file1:
+            if allowed_file(file1.filename):
+                filename = secure_filename(file1.filename)
+                file1.save(os.path.join(app.config[&apos;UPLOAD_FOLDER&apos;], filename))
+            else:
+                return u&apos;请按要求重新选择要上传的文件！&apos;
+        else:
+            pass
+        photo1 = Article.query.filter(Article.id == photo_id).first()
+        if file1:
+            photo1.picture_path = file1.filename
+        if content1:
+            photo1.content = content1
+        db.session.commit()
+        return redirect(url_for(&apos;list_a&apos;))
+else:
+    return redirect(url_for(&apos;login_a&apos;))
+</code></pre><p>一开始本来打算做个图文一起上传的，结果想想觉得图文直播大多数都是图片居多，而且很多时候下面并没有解释的文字，所以我觉得还是图片跟文字分开，各改各的。这里图片在后台显示是根据数据库中存储的图片名字，然后再去image文件中获取对应的图片。</p>
 </the>
       
     </div>
@@ -380,13 +420,13 @@ def message(a_login):
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a  href="/2017/09/26/重定向对象redirect/">重定向对象redirect</a></p>
+        <p><span>本文标题:</span><a  href="/2018/05/04/用flask写图文直播（五）/">用flask写图文直播网页（五）</a></p>
         <p><span>文章作者:</span><a  href="/" title="访问 reknow 的个人博客">reknow</a></p>
-        <p><span>发布时间:</span>2017年09月26日 - 17时30分</p>
-        <p><span>最后更新:</span>2017年09月26日 - 18时03分</p>
+        <p><span>发布时间:</span>2018年05月04日 - 09时58分</p>
+        <p><span>最后更新:</span>2018年05月04日 - 10时00分</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/09/26/重定向对象redirect/" title="重定向对象redirect">http://reknow.dropsec.xyz/2017/09/26/重定向对象redirect/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://reknow.dropsec.xyz/2017/09/26/重定向对象redirect/　　作者: reknow" title=""></span>
+            <span>原始链接:</span><a class="post-url" href="/2018/05/04/用flask写图文直播（五）/" title="用flask写图文直播网页（五）">http://reknow.dropsec.xyz/2018/05/04/用flask写图文直播（五）/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://reknow.dropsec.xyz/2018/05/04/用flask写图文直播（五）/　　作者: reknow" title=""></span>
         </p>
         <p>
             <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
@@ -397,18 +437,18 @@ def message(a_login):
 
 <nav id="article-nav">
   
-    <a  href="/2017/10/25/windows下修改MySQL5.7.11的root密码/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a  href="/2018/05/04/用flask写图文直播（四）/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption"><</strong>
       <div class="article-nav-title">
         
-          Windows下修改MySQL5.7.11(以上)的root密码
+          用flask写图文直播网页（四）
         
       </div>
     </a>
   
   
-    <a  href="/2017/09/26/Flask框架-debug模式/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Flask框架-debug模式</div>
+    <a  href="/2018/05/04/用flask写图文直播（三）/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">用flask写图文直播网页（三）</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -491,13 +531,13 @@ def message(a_login):
 
     <div class="scroll" id="post-nav-button">
         
-            <a  href="/2017/10/25/windows下修改MySQL5.7.11的root密码/" title="上一篇: Windows下修改MySQL5.7.11(以上)的root密码">
+            <a  href="/2018/05/04/用flask写图文直播（四）/" title="上一篇: 用flask写图文直播网页（四）">
                 <i class="fa fa-angle-left"></i>
             </a>
         
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
         
-            <a  href="/2017/09/26/Flask框架-debug模式/" title="下一篇: Flask框架-debug模式">
+            <a  href="/2018/05/04/用flask写图文直播（三）/" title="下一篇: 用flask写图文直播网页（三）">
                 <i class="fa fa-angle-right"></i>
             </a>
         

@@ -3,6 +3,385 @@
   
     
     <entry>
+      <title><![CDATA[用flask写图文直播网页（五）]]></title>
+      <url>/2018/05/04/%E7%94%A8flask%E5%86%99%E5%9B%BE%E6%96%87%E7%9B%B4%E6%92%AD%EF%BC%88%E5%85%AD%EF%BC%89/</url>
+      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>图文直播</strong><br>大部分功能都做完了唉，剩下的就是把我们上传的图文美美的展示出来了开心ing..φ(&gt;ω&lt;*)<br><a id="more"></a></excerpt></p>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<p>最后就只剩下直播首页了。</p>
+<p>###首页布局<br>关于布局，这个就看个人喜好了，我是根据直播客这个平台的大小做的，定义的盒子大小也是跟直播客差不多。<br>test.html</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;META HTTP-EQUIV=&quot;Pragma&quot; CONTENT=&quot;no-cache&quot;&gt;
+&lt;META HTTP-EQUIV=&quot;Cache-Control&quot; CONTENT=&quot;no-cache&quot;&gt;
+&lt;META HTTP-EQUIV=&quot;Refresh&quot; CONTENT=&quot;100&quot;&gt;
+&lt;!--&amp;lt;!&amp;ndash;禁用浏览器缓存&amp;ndash;&amp;gt;--&gt;
+
+&lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;{{ url_for('static', filename = 'test/main.css') }}&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;{{ url_for('static', filename = 'test/lrtk.css') }}&quot; /&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;{{ url_for('static', filename = 'css/test.css') }}&quot;&gt;
+&lt;title&gt;直播的名字&lt;/title&gt;
+
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;main&quot;&gt;
+    &lt;div class=&quot;zhibo&quot;&gt;
+        &lt;div style=&quot;position: relative&quot;&gt;
+                &lt;img src=&quot;{{ url_for('static', filename = 'images/11.png') }}&quot; height=&quot;200&quot; width=&quot;740&quot;&gt;
+                &lt;div style=&quot;position: absolute; left: 10px; top: 50px&quot; id=&quot;title&quot;&gt;
+                    &lt;h2&gt;介绍&lt;/h2&gt;
+                &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div id=&quot;zhuti&quot;&gt;
+            &lt;div id=&quot;zhiding&quot; class=&quot;time&quot;&gt;置顶&lt;/div&gt;
+                &lt;article class=&quot;message&quot; id=&quot;firstMessage&quot;&gt;现场直播&lt;/article&gt;
+        &lt;/div&gt;
+        &lt;ul id=&quot;show&quot;&gt;
+            {% for i in photo %}
+                    <li>
+                        <div class="patch">
+                            <div class="patch_on">
+                                <div class="time_info">
+                                    <strong>{{ i.create_time }}</strong>
+                                </div>
+                                <div class="center">
+                                    <img src="{{ url_for('static', filename = 'image/' + i.picture_path) }}" height="446" width="594" class="center_img">
+                                    <p>{{ i.content }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <p>{% endfor %}&lt;/p&gt;
+        &lt;/ul&gt;
+        &lt;div class=&quot;qidai&quot;&gt;内容已经加载完毕，敬请期待更多内容&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;{{ url_for('static', filename = 
+    'test/jquery.min.js') }}&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;{{ url_for('static', filename = 'test/jquery.imgbox.pack.js') }}&quot;&gt;&lt;/script&gt;
+
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;{{ url_for('static', filename = 'test/test.js') }}&quot;&gt;&lt;/script&gt;
+
+&lt;!--foot开始--&gt;
+&lt;div id=&quot;foot&quot; &gt;
+&lt;div&gt;
+    &lt;a href=# rel=&quot;nofollow&quot;&gt;关于我们&lt;/a&gt;|&lt;a
+     href=#&gt;实验室微博&lt;/a&gt;|&lt;a
+     href=#&gt;实验室官网&lt;/a&gt;
+    &lt;br/&gt;
+    &quot;DROPS攻防实验室-安全研发小组版权所有&quot;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;script&gt;
+
+&lt;/script&gt;
+&lt;/html&gt;
+</p></code></pre><p>这里用到了一些前端的js文件，是一些同学帮我弄得，本来他给我写了一些json代码，无奈wo太笨了，json一时半会没学会，也就用了那种把图片信息存储进数据库的笨办法 o(TωT)o ，好了，下面再贴上直播主页的功能代码吧。</p>
+<p>sc.py</p>
+<pre><code># 直播首页
+@app.route(&apos;/&apos;)
+def test():
+photo_all = Article.query.order_by(&apos;-create_time&apos;).all()
+content = {
+    &apos;photo&apos;: photo_all      # 获取所有数据
+}
+return render_template(&apos;test.html&apos;, **content)
+</code></pre><p>到这里就没什么要说的了，代码也不详细一一解释了，我觉得，自己慢慢探索出代码的意义会更好。<br>总体看       哇！写的很少，代码很多，果然我还是好懒哦(ㅍ_ㅍ)</p>
+</the>]]></content>
+      
+        <categories>
+            
+            <category> technology </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> flask </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[用flask写图文直播网页（四）]]></title>
+      <url>/2018/05/04/%E7%94%A8flask%E5%86%99%E5%9B%BE%E6%96%87%E7%9B%B4%E6%92%AD%EF%BC%88%E5%9B%9B%EF%BC%89/</url>
+      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>图文直播</strong><br>图文发布可是重中之重的啊，下面我们来一起实现图文发布的功能吧..(ノ￣▽￣)<br><a id="more"></a></excerpt></p>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<p>前面已经实现了管理员的登录、登出和注销功能，下面来实现图片和文字的上传和图文管理。<br>实现之前，的先把前端页面主体部分的模型做出来</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/6755082-38ab64491eb926a9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图文上传界面"><br>前端的一些样式可以自己随便做这里不贴代码了</p>
+<p>###实现图文发布<br>首先的在static目录下建一个image文件夹把需要上传的图片存储在里面。然后获取图片的名字信息，和文字一起保存在数据库中。</p>
+<p>sc.py</p>
+<pre><code>#判断文件后缀名是否是图片类型文件
+UPLOAD_FOLDER = &apos;./static/image&apos;
+ALLOWED_EXTENSIONS = [&apos;png&apos;, &apos;jpg&apos;, &apos;jpeg&apos;, &apos;gif&apos;]
+app = Flask(__name__)
+
+#生成随机密钥
+app.config[&apos;UPLOAD_FOLDER&apos;] = UPLOAD_FOLDER
+app.config[&apos;SECRET_KEY&apos;] = os.urandom(24)
+app.config.from_object(config)
+db.init_app(app)
+
+def allowed_file(filename):
+    return &apos;.&apos; in filename and filename.rsplit(&apos;.&apos;, 1)[1] in ALLOWED_EXTENSIONS
+
+# 发布图文
+@app.route(&apos;/picture/&apos;, methods=[&apos;GET&apos;, &apos;POST&apos;])
+def upload_file():
+admin_id = session.get(&apos;user_id&apos;)
+if admin_id:
+    if request.method == &apos;GET&apos;:
+        return render_template(&apos;picture.html&apos;)
+    else:
+        file = request.files[&apos;file&apos;]
+        content = request.form.get(&apos;content&apos;)
+        if file:
+            if allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config[&apos;UPLOAD_FOLDER&apos;], filename))
+            else:
+                return u&apos;请按要求重新选择要上传的文件！&apos;
+        else:
+            pass
+        photo1 = Article(content = content, picture_path = file.filename)
+        db.session.add(photo1)
+        db.session.commit()
+        return redirect(url_for(&apos;index&apos;))
+else:
+    return redirect(url_for(&apos;login_a&apos;))
+</code></pre><p>这上面的代码很大一部分来自于flask官方网站的图片上传部分，这是我自己添加了图文一起上传，只上传图片和只上传文字三个部分。</p>
+</the>]]></content>
+      
+        <categories>
+            
+            <category> technology </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> flask </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[用flask写图文直播网页（五）]]></title>
+      <url>/2018/05/04/%E7%94%A8flask%E5%86%99%E5%9B%BE%E6%96%87%E7%9B%B4%E6%92%AD%EF%BC%88%E4%BA%94%EF%BC%89/</url>
+      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>图文直播</strong><br>图文上传已经做好了，但是如果现在上传错误了咋办，这时候你就需要在后台做一个图文管理的界面了..<br><a id="more"></a></excerpt></p>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<p>###实现图文管理功能<br>首先贴一下图文管理界面前端代码：<br>list-admin.html</p>
+<pre><code>{% extends 'base.html' %}
+{% block yemian %}图文管理界面{% endblock %}
+    {% block main %}
+    <div class="row">
+        <form action="" enctype="multipart/form-data" method="POST" class="form-horizontal">
+            <table class="table table-hover">
+                <tr>
+                    <th>序号</th>
+                    <th>图片</th>
+                    <th>文章</th>
+                    <th>提交时间</th>
+                    <th>操作</th>
+                </tr>
+                    {% for item in photo %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td width="15%">
+                            <img src="{{ url_for('static', filename = 'image/' + item.picture_path) }}" alt="" height="70" width="100">
+                        </td>
+                        <td width="50%" height="87">{{ item.content }}</td>
+                        <td>{{ item.create_time }}</td>
+                        <td>
+                            <a href="{{ url_for('detail_a', photo_id = item.id) }}" class="btn btn-default btn-xs" title="查看"><i class="fa fa-search"></i></a>
+                            <a href="{{ url_for('change_a', photo_id = item.id) }}" class="btn btn-default btn-xs" title="修改"><i class="fa fa-pencil"></i></a>
+                            <a href="{{ url_for('remove', content=item.content) }}" class="btn btn-default btn-xs" title="删除"><i class="fa fa-trash"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+            </table>
+        </form>
+    </div>
+    {% endblock %}
+</code></pre><p>####功能函数部分</p>
+<pre><code># 图文管理
+@app.route(&apos;/admin/list/&apos;, methods = [&apos;GET&apos;, &apos;POST&apos;])
+def list_a():
+admin2_id = session.get(&apos;user_id&apos;)
+if admin2_id:
+    if request.method == &apos;GET&apos;:
+        data_all = Article.query.order_by(&apos;-create_time&apos;).all()
+        items = {
+            &apos;photo&apos;: data_all
+        }
+        return render_template(&apos;list-admin.html&apos;, **items)
+else:
+    return redirect(url_for(&apos;login_a&apos;))
+
+# 删除图文
+@app.route(&apos;/remove/&apos;)
+def remove():
+content = request.args.get(&apos;content&apos;)
+photo1 = Article.query.filter(Article.content == content).first()
+db.session.delete(photo1)
+db.session.commit()
+return redirect(url_for(&apos;list_a&apos;))
+
+# 查看图文
+@app.route(&apos;/detail/&lt;photo_id&gt;/&apos;)
+def detail_a(photo_id):
+photo_model = Article.query.filter(Article.id == photo_id).first()
+return render_template(&apos;detail.html&apos;, photo = photo_model)
+
+# 修改图文
+def allowed_file1(filename1):
+return &apos;.&apos; in filename1 and filename1.rsplit(&apos;.&apos;, 1)[1] in ALLOWED_EXTENSIONS
+
+@app.route(&apos;/change/&apos;, methods = [&apos;GET&apos;, &apos;POST&apos;])
+def change_a():
+admin3_id = session.get(&apos;user_id&apos;)
+if admin3_id:
+    if request.method == &apos;GET&apos;:
+        return render_template(&apos;change.html&apos;)
+    else:
+        file1 = request.files[&apos;file&apos;]
+        content1 = request.form.get(&apos;content&apos;)
+        photo_id = request.args.get(&apos;photo_id&apos;)
+        if file1:
+            if allowed_file(file1.filename):
+                filename = secure_filename(file1.filename)
+                file1.save(os.path.join(app.config[&apos;UPLOAD_FOLDER&apos;], filename))
+            else:
+                return u&apos;请按要求重新选择要上传的文件！&apos;
+        else:
+            pass
+        photo1 = Article.query.filter(Article.id == photo_id).first()
+        if file1:
+            photo1.picture_path = file1.filename
+        if content1:
+            photo1.content = content1
+        db.session.commit()
+        return redirect(url_for(&apos;list_a&apos;))
+else:
+    return redirect(url_for(&apos;login_a&apos;))
+</code></pre><p>一开始本来打算做个图文一起上传的，结果想想觉得图文直播大多数都是图片居多，而且很多时候下面并没有解释的文字，所以我觉得还是图片跟文字分开，各改各的。这里图片在后台显示是根据数据库中存储的图片名字，然后再去image文件中获取对应的图片。</p>
+</the>]]></content>
+      
+        <categories>
+            
+            <category> technology </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> flask </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[用flask写图文直播网页（三）]]></title>
+      <url>/2018/05/04/%E7%94%A8flask%E5%86%99%E5%9B%BE%E6%96%87%E7%9B%B4%E6%92%AD%EF%BC%88%E4%B8%89%EF%BC%89/</url>
+      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>图文直播</strong><br>既然是图文直播，那肯定需要管理员身份来上传图文吧，那么管理员信息存放在哪呢，登录注销要怎么弄呢(｡･ω･｡)<br><a id="more"></a></excerpt></p>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<p>把基本的前端样式都弄好，然后就可以来实现它们的功能了哦（因为光有外表没有内涵是不行的嘛）(～￣▽￣)～ </p>
+<p>一步一步来</p>
+<p>###在mysql数据库中建表<br>由于小编使用的是mysql数据库（其他数据库都行，哪个熟练用哪个），接下来的先在mysql中建库（tuwen）、建两张表（admin、photo）admin用来存储管理员的账号密码，photo用来存储图片和文字信息。</p>
+<p>modle.py</p>
+<pre><code>from exts import db
+from datetime import datetime
+
+class Admin(db.Model):
+__tablename__ = &apos;admin&apos;
+id = db.Column(db.Integer, primary_key = True, autoincrement = True)
+telephone = db.Column(db.String(20), nullable = False)
+username = db.Column(db.String(100), nullable = False)
+password = db.Column(db.String(100), nullable = False)
+
+class Article(db.Model):
+__tablename__ = &apos;photo&apos;
+id = db.Column(db.Integer, primary_key = True, autoincrement = True)
+picture_path = db.Column(db.String(100), nullable = True)
+content = db.Column(db.Text, nullable = True)
+create_time = db.Column(db.DateTime, default = datetime.now)
+</code></pre><p>建完库跟表，下面就要进行数据库连接了</p>
+<pre><code>SQLALCHEMY_DATABASE_URI = &apos;mysql+pymysql://root:root@localhost:3306/tuwen?charset=utf8&apos;
+SQLALCHEMY_TRACK_MODIFICATIONS = True
+</code></pre><p>###实现登录功能<br>sc.py</p>
+<pre><code>  # 登录
+@app.route(&apos;/login/&apos;, methods = [&apos;POST&apos;, &apos;GET&apos;])
+def login_a():
+if request.method == &apos;GET&apos;:
+    return render_template(&apos;login.html&apos;)
+else:
+    telephone = request.form.get(&apos;telephone&apos;)
+    password = request.form.get(&apos;password&apos;)
+    user = Admin.query.filter(Admin.telephone == telephone, Admin.password == password).first()
+    if user:
+        session[&apos;user_id&apos;] = user.id
+        session.permanent = True
+        return redirect(url_for(&apos;upload_file&apos;))
+    else:
+        return u&apos;账号或密码输入错误，请确认后重新输入！&apos;
+</code></pre><p>###实现登出功能</p>
+<p>sc.py</p>
+<pre><code># 登出
+@app.route(&apos;/logout/&apos;)
+def logout_a():
+session.clear()
+return redirect(url_for(&apos;login_a&apos;))
+</code></pre><p>相比较登录，登出的代码就少的多，清除session缓存就行了</p>
+<p>###实现注销功能<br>sc.py</p>
+<pre><code># 注销
+@app.context_processor
+def my_context_processor():
+user_id = session.get(&apos;user_id&apos;)
+if user_id:
+    user = Admin.query.filter(Admin.id == user_id).first()
+    if user:
+        return {&apos;user&apos;: user}
+return {}
+</code></pre><p>最后不要忘记在父模板中连接对应的按钮，比如：<br>base.html</p>
+<pre><code>&lt;ul class=&quot;nav navbar-nav navbar-right&quot;&gt;
+                    {% if user %}
+                                <li><a href="#">管理员</a></li>
+                                <li><a href="{{ url_for('logout_a') }}">注销</a></li>
+                          {% else %}
+                                <li><a href="{{ url_for('login_a') }}">登录</a></li>
+                          {% endif %}
+&lt;/ul&gt;
+</code></pre></the>]]></content>
+      
+        <categories>
+            
+            <category> technology </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> flask </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[用flask写图文直播网页（二）]]></title>
       <url>/2018/05/04/%E7%94%A8flask%E5%86%99%E5%9B%BE%E6%96%87%E7%9B%B4%E6%92%AD%EF%BC%88%E4%BA%8C%EF%BC%89/</url>
       <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>图文直播</strong><br>flask框架用起来确实很方便，特别适合新手，下面就来看看flask做一个图文直播网页吧..<br><a id="more"></a></excerpt></p>
