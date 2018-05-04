@@ -3,6 +3,40 @@
   
     
     <entry>
+      <title><![CDATA[用flask写图文直播网页（一）]]></title>
+      <url>/2018/05/04/%E7%94%A8flask%E5%86%99%E5%9B%BE%E6%96%87%E7%9B%B4%E6%92%AD%EF%BC%88%E4%B8%80%EF%BC%89/</url>
+      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>图文直播</strong><br>flask框架用起来确实很方便，特别适合新手，下面就来看看flask做一个图文直播网页吧..<br><a id="more"></a></excerpt></p>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<blockquote>
+<p>这个东西也可以说是我初学flask的成果展示吧（有点菜，勿喷哦0.0）<br>先上一波最终展示图吧</p>
+</blockquote>
+<p><img src="https://upload-images.jianshu.io/upload_images/6755082-29160d05bfe34527.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="标题"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/6755082-8425e87a66187f7e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="展示"></p>
+<blockquote>
+<p>既然是图文直播，那么后台的管理肯定是不能少的，再来看看后台的管理模式吧</p>
+</blockquote>
+<p><img src="https://upload-images.jianshu.io/upload_images/6755082-ed230e45384befb8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="管理员登录界面"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/6755082-bb7ef94d476b50b8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图文上传界面"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/6755082-6a8bda149776c415.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图文管理界面"></p>
+</the>]]></content>
+      
+        <categories>
+            
+            <category> technology </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> flask </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[ERROR 1820 (HY000) You must reset your password]]></title>
       <url>/2017/10/28/mysql--ERROR%EF%BC%881820%EF%BC%89%E5%AF%86%E7%A0%81%E9%97%AE%E9%A2%98/</url>
       <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>登录mysql的root账户后不能进行其他操作：</strong><br>mysql好难弄啊，最近弄好了root密码问题，现在又出来个root账户进入后不能进行操作，到底怎么解决呢，来看看吧。<br><a id="more"></a></excerpt></p>
@@ -10,9 +44,9 @@
 
 
 <p>非常诡异啊，明明用密码登陆进去了，怎么还提示需要密码。什么操作都不许<br>参考官方的一个文档，见<a href="http://dev.mysql.com/doc/refman/5.6/en/alter-user.html。" target="_blank" rel="external">http://dev.mysql.com/doc/refman/5.6/en/alter-user.html。</a>如下操作后就ok了： </p>
-<p>mysql&gt; create database school;<br>ERROR 1820 (HY000): You must SET PASSWORD before executing this statement<br>mysql&gt; SET PASSWORD = PASSWORD(‘123456’);<br>Query OK, 0 rows affected (0.03 sec) </p>
-<p>mysql&gt; create database yan1;<br>Query OK, 1 row affected (0.00 sec) </p>
-<p>好了问题解决，现在继续操作你的mysql吧。</p>
+<p>mysql&gt; create database school;<br>ERROR 1820 (HY000): You must SET PASSWORD before executing this statement<br>mysql&gt; set password = password(‘123456’);<br>Query OK, 0 rows affected (0.03 sec) </p>
+<p>mysql&gt; create database school;<br>Query OK, 1 row affected (0.00 sec) </p>
+<p>其实就是用（set password = password(‘123456’)这个命令重置一下密码）好了问题解决，现在继续操作你的mysql吧。</p>
 </the>]]></content>
       
         <categories>
@@ -62,7 +96,7 @@
 <li>（可能先前的版本密码的抬头是password，5.7.11是 authentication_string,可以select * from user,查看一下）</li>
 <li>(老版本)update user set password=password(“123456”) where user=”root”;</li>
 <li>（5.7.11以上版本）update user set authentication_string=password(“123456”) where user=”root”;</li>
-<li>最后，flush privileges;就OK了。</li>
+<li>最后，flush privileges;（ 命令本质上的作用是将当前user和privilige表中的用户信息/权限设置从mysql库(MySQL数据库的内置库)中提取到内存里。）就OK了。</li>
 </ul>
 <p><img src="http://upload-images.jianshu.io/upload_images/6755082-6046f76a8065e211.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
 <h2 id="退出去重新登录一下试试看："><a href="#退出去重新登录一下试试看：" class="headerlink" title="退出去重新登录一下试试看："></a>退出去重新登录一下试试看：</h2><p><img src="http://upload-images.jianshu.io/upload_images/6755082-969697ba39446e18.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
