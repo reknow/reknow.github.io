@@ -3,7 +3,7 @@
   
     
     <entry>
-      <title><![CDATA[用flask写图文直播网页（五）]]></title>
+      <title><![CDATA[用flask写图文直播网页（六）]]></title>
       <url>/2018/05/04/%E7%94%A8flask%E5%86%99%E5%9B%BE%E6%96%87%E7%9B%B4%E6%92%AD%EF%BC%88%E5%85%AD%EF%BC%89/</url>
       <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>图文直播</strong><br>大部分功能都做完了唉，剩下的就是把我们上传的图文美美的展示出来了开心ing..φ(&gt;ω&lt;*)<br><a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
@@ -39,21 +39,23 @@
                 &lt;article class=&quot;message&quot; id=&quot;firstMessage&quot;&gt;现场直播&lt;/article&gt;
         &lt;/div&gt;
         &lt;ul id=&quot;show&quot;&gt;
-            {% for i in photo %}
-                    <li>
-                        <div class="patch">
-                            <div class="patch_on">
-                                <div class="time_info">
-                                    <strong>{{ i.create_time }}</strong>
-                                </div>
-                                <div class="center">
-                                    <img src="{{ url_for('static', filename = 'image/' + i.picture_path) }}" height="446" width="594" class="center_img">
-                                    <p>{{ i.content }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <p>{% endfor %}&lt;/p&gt;
+     {% for i in photo %}
+             <li>
+             <div class="patch">
+               <div class="patch_on">
+              <div class="time_info">
+               <strong>{{ i.create_time }}</strong>
+              </div>
+             <div class="center">
+           <img src="{{ url_for('static', filename = 'image/' + i.picture_path) }}" height="446" width="594" class="center_img">
+            <p>{{ i.content }}</p>
+            </div>
+            </div>
+             </div>
+           </li>
+           <p>{% endfor %}&lt;/p&gt;               
+
+
         &lt;/ul&gt;
         &lt;div class=&quot;qidai&quot;&gt;内容已经加载完毕，敬请期待更多内容&lt;/div&gt;
     &lt;/div&gt;
