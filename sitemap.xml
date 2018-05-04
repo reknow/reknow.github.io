@@ -397,40 +397,7 @@ return {}
 <p><img src="https://upload-images.jianshu.io/upload_images/6755082-ca6716887957dbff.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="后台主界面代码展示"></p>
 <p><img src="https://upload-images.jianshu.io/upload_images/6755082-85d684bdcf738f64.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="管理员登录界面"></p>
 <p>然后通过这种方法再加上CSS代码的一些控制，你就可以把管理界面改成自己喜欢的样子（好像我做的有点low啊  0.0，css学的不好，伤心一秒T.T）</p>
-<p>最后再来贴一个图文管理界面代码，后面再来解释这些。</p>
-<pre><code>{% extends 'base.html' %}
-{% block yemian %}图文管理界面{% endblock %}
-	    {% block main %}
-	        <div class="row">
-	            <form action="" enctype="multipart/form-data" method="POST" class="form-horizontal">
-	            <table class="table table-hover">
-	                <tr>
-	                    <th>序号</th>
-	                    <th>图片</th>
-	                    <th>文章</th>
-	                    <th>提交时间</th>
-	                    <th>操作</th>
-	                </tr>
-	                    {% for item in photo %}
-	                    <tr>
-	                        <td>{{ loop.index }}</td>
-	                        <td width="15%">
-	                            <img src="{{ url_for('static', filename = 'image/' + item.picture_path) }}" alt="" height="70" width="100">
-	                        </td>
-	                        <td width="50%" height="87">{{ item.content }}</td>
-	                        <td>{{ item.create_time }}</td>
-	                        <td>
-	                            <a href="{{ url_for('detail_a', photo_id = item.id) }}" class="btn btn-default btn-xs" title="查看"><i class="fa fa-search"></i></a>
-	                            <a href="{{ url_for('change_a', photo_id = item.id) }}" class="btn btn-default btn-xs" title="修改"><i class="fa fa-pencil"></i></a>
-	                            <a href="{{ url_for('remove', content=item.content) }}" class="btn btn-default btn-xs" title="删除"><i class="fa fa-trash"></i></a>
-	                        </td>
-	                    </tr>
-	                    {% endfor %}
-	            </table>
-	        </form>
-	    </div>
-	    {% endblock %}
-</code></pre></the>]]></content>
+</the>]]></content>
       
         <categories>
             

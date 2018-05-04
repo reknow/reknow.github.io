@@ -20,8 +20,7 @@
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/6755082-3c2be088c4ea59ee.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/6755082-ca6716887957dbff.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/6755082-85d684bdcf738f64.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="http://reknow.dropsec.xyz/2018/05/04/用flask写图文直播（二）/%7B%7B%20url_for(%27static%27,%20filename%20=%20%27image/%27%20+%20item.picture_path)%20%7D%7D">
-<meta property="og:updated_time" content="2018-05-04T02:40:22.112Z">
+<meta property="og:updated_time" content="2018-05-04T03:30:15.439Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="用flask写图文直播网页（二）">
 <meta name="twitter:description" content="图文直播flask框架用起来确实很方便，特别适合新手，下面就来看看flask做一个图文直播网页吧..">
@@ -331,40 +330,7 @@
 <p><img src="https://upload-images.jianshu.io/upload_images/6755082-ca6716887957dbff.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="后台主界面代码展示"></p>
 <p><img src="https://upload-images.jianshu.io/upload_images/6755082-85d684bdcf738f64.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="管理员登录界面"></p>
 <p>然后通过这种方法再加上CSS代码的一些控制，你就可以把管理界面改成自己喜欢的样子（好像我做的有点low啊  0.0，css学的不好，伤心一秒T.T）</p>
-<p>最后再来贴一个图文管理界面代码，后面再来解释这些。</p>
-<pre><code>{% extends 'base.html' %}
-{% block yemian %}图文管理界面{% endblock %}
-	    {% block main %}
-	        <div class="row">
-	            <form action="" enctype="multipart/form-data" method="POST" class="form-horizontal">
-	            <table class="table table-hover">
-	                <tr>
-	                    <th>序号</th>
-	                    <th>图片</th>
-	                    <th>文章</th>
-	                    <th>提交时间</th>
-	                    <th>操作</th>
-	                </tr>
-	                    {% for item in photo %}
-	                    <tr>
-	                        <td>{{ loop.index }}</td>
-	                        <td width="15%">
-	                            <img src="{{ url_for('static', filename = 'image/' + item.picture_path) }}" alt="" height="70" width="100">
-	                        </td>
-	                        <td width="50%" height="87">{{ item.content }}</td>
-	                        <td>{{ item.create_time }}</td>
-	                        <td>
-	                            <a href="{{ url_for('detail_a', photo_id = item.id) }}" class="btn btn-default btn-xs" title="查看"><i class="fa fa-search"></i></a>
-	                            <a href="{{ url_for('change_a', photo_id = item.id) }}" class="btn btn-default btn-xs" title="修改"><i class="fa fa-pencil"></i></a>
-	                            <a href="{{ url_for('remove', content=item.content) }}" class="btn btn-default btn-xs" title="删除"><i class="fa fa-trash"></i></a>
-	                        </td>
-	                    </tr>
-	                    {% endfor %}
-	            </table>
-	        </form>
-	    </div>
-	    {% endblock %}
-</code></pre></the>
+</the>
       
     </div>
     
@@ -375,7 +341,7 @@
         <p><span>本文标题:</span><a  href="/2018/05/04/用flask写图文直播（二）/">用flask写图文直播网页（二）</a></p>
         <p><span>文章作者:</span><a  href="/" title="访问 reknow 的个人博客">reknow</a></p>
         <p><span>发布时间:</span>2018年05月04日 - 09时49分</p>
-        <p><span>最后更新:</span>2018年05月04日 - 10时40分</p>
+        <p><span>最后更新:</span>2018年05月04日 - 11时30分</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2018/05/04/用flask写图文直播（二）/" title="用flask写图文直播网页（二）">http://reknow.dropsec.xyz/2018/05/04/用flask写图文直播（二）/</a>
             <span class="copy-path" data-clipboard-text="原文: http://reknow.dropsec.xyz/2018/05/04/用flask写图文直播（二）/　　作者: reknow" title=""></span>
