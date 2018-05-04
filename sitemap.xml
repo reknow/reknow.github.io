@@ -95,45 +95,79 @@ return render_template(&apos;test.html&apos;, **content)
     </entry>
     
     <entry>
+      <title><![CDATA[用flask写图文直播网页（四）]]></title>
+      <url>/2018/05/04/%E7%94%A8flask%E5%86%99%E5%9B%BE%E6%96%87%E7%9B%B4%E6%92%AD%EF%BC%88%E5%9B%9B%EF%BC%89/</url>
+      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>图文直播</strong><br>图文发布可是重中之重的啊，下面我们来一起实现图文发布的功能吧..(ノ￣▽￣)<br><a id="more"></a></excerpt></p>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+<p>前面已经实现了管理员的登录、登出和注销功能，下面来实现图片和文字的上传和图文管理。<br>实现之前，的先把前端页面主体部分的模型做出来</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/6755082-38ab64491eb926a9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图文上传界面"><br>前端的一些样式可以自己随便做这里不贴代码了</p>
+<p>###实现图文发布<br>首先的在static目录下建一个image文件夹把需要上传的图片存储在里面。然后获取图片的名字信息，和文字一起保存在数据库中。</p>
+<p>sc.py</p>
+<pre><code>#判断文件后缀名是否是图片类型文件
+UPLOAD_FOLDER = &apos;./static/image&apos;
+ALLOWED_EXTENSIONS = [&apos;png&apos;, &apos;jpg&apos;, &apos;jpeg&apos;, &apos;gif&apos;]
+app = Flask(__name__)
+
+#生成随机密钥
+app.config[&apos;UPLOAD_FOLDER&apos;] = UPLOAD_FOLDER
+app.config[&apos;SECRET_KEY&apos;] = os.urandom(24)
+app.config.from_object(config)
+db.init_app(app)
+
+def allowed_file(filename):
+    return &apos;.&apos; in filename and filename.rsplit(&apos;.&apos;, 1)[1] in ALLOWED_EXTENSIONS
+
+# 发布图文
+@app.route(&apos;/picture/&apos;, methods=[&apos;GET&apos;, &apos;POST&apos;])
+def upload_file():
+admin_id = session.get(&apos;user_id&apos;)
+if admin_id:
+    if request.method == &apos;GET&apos;:
+        return render_template(&apos;picture.html&apos;)
+    else:
+        file = request.files[&apos;file&apos;]
+        content = request.form.get(&apos;content&apos;)
+        if file:
+            if allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config[&apos;UPLOAD_FOLDER&apos;], filename))
+            else:
+                return u&apos;请按要求重新选择要上传的文件！&apos;
+        else:
+            pass
+        photo1 = Article(content = content, picture_path = file.filename)
+        db.session.add(photo1)
+        db.session.commit()
+        return redirect(url_for(&apos;index&apos;))
+else:
+    return redirect(url_for(&apos;login_a&apos;))
+</code></pre><p>这上面的代码很大一部分来自于flask官方网站的图片上传部分，这是我自己添加了图文一起上传，只上传图片和只上传文字三个部分。</p>
+</the>]]></content>
+      
+        <categories>
+            
+            <category> technology </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> flask </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[用flask写图文直播网页（五）]]></title>
       <url>/2018/05/04/%E7%94%A8flask%E5%86%99%E5%9B%BE%E6%96%87%E7%9B%B4%E6%92%AD%EF%BC%88%E4%BA%94%EF%BC%89/</url>
       <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>图文直播</strong><br>图文上传已经做好了，但是如果现在上传错误了咋办，这时候你就需要在后台做一个图文管理的界面了..<br><a id="more"></a></excerpt></p>
 <the rest="" of="" contents="" |="" 余下全文="">
 
-<p>###实现图文管理功能<br>首先贴一下图文管理界面前端代码：<br>list-admin.html</p>
-<pre><code>{% extends 'base.html' %}
-{% block yemian %}图文管理界面{% endblock %}
-    {% block main %}
-    <div class="row">
-        <form action="" enctype="multipart/form-data" method="POST" class="form-horizontal">
-            <table class="table table-hover">
-                <tr>
-                    <th>序号</th>
-                    <th>图片</th>
-                    <th>文章</th>
-                    <th>提交时间</th>
-                    <th>操作</th>
-                </tr>
-                    {% for item in photo %}
-                    <tr>
-                        <td>{{ loop.index }}</td>
-                        <td width="15%">
-                            <img src="{{ url_for('static', filename = 'image/' + item.picture_path) }}" alt="" height="70" width="100">
-                        </td>
-                        <td width="50%" height="87">{{ item.content }}</td>
-                        <td>{{ item.create_time }}</td>
-                        <td>
-                            <a href="{{ url_for('detail_a', photo_id = item.id) }}" class="btn btn-default btn-xs" title="查看"><i class="fa fa-search"></i></a>
-                            <a href="{{ url_for('change_a', photo_id = item.id) }}" class="btn btn-default btn-xs" title="修改"><i class="fa fa-pencil"></i></a>
-                            <a href="{{ url_for('remove', content=item.content) }}" class="btn btn-default btn-xs" title="删除"><i class="fa fa-trash"></i></a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-            </table>
-        </form>
-    </div>
-    {% endblock %}
-</code></pre><p>####功能函数部分</p>
+<p>###实现图文管理功能<br>因为前端代码粘贴进来不全部显示，所以贴一张主要的代码图吧<br><img src="https://upload-images.jianshu.io/upload_images/6755082-0f2434958c1d09a9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>####功能函数部分</p>
 <pre><code># 图文管理
 @app.route(&apos;/admin/list/&apos;, methods = [&apos;GET&apos;, &apos;POST&apos;])
 def list_a():
@@ -195,72 +229,6 @@ if admin3_id:
 else:
     return redirect(url_for(&apos;login_a&apos;))
 </code></pre><p>一开始本来打算做个图文一起上传的，结果想想觉得图文直播大多数都是图片居多，而且很多时候下面并没有解释的文字，所以我觉得还是图片跟文字分开，各改各的。这里图片在后台显示是根据数据库中存储的图片名字，然后再去image文件中获取对应的图片。</p>
-</the>]]></content>
-      
-        <categories>
-            
-            <category> technology </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> flask </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[用flask写图文直播网页（四）]]></title>
-      <url>/2018/05/04/%E7%94%A8flask%E5%86%99%E5%9B%BE%E6%96%87%E7%9B%B4%E6%92%AD%EF%BC%88%E5%9B%9B%EF%BC%89/</url>
-      <content type="html"><![CDATA[<p><excerpt in="" index="" |="" 首页摘要=""><br><strong>图文直播</strong><br>图文发布可是重中之重的啊，下面我们来一起实现图文发布的功能吧..(ノ￣▽￣)<br><a id="more"></a></excerpt></p>
-<the rest="" of="" contents="" |="" 余下全文="">
-
-<p>前面已经实现了管理员的登录、登出和注销功能，下面来实现图片和文字的上传和图文管理。<br>实现之前，的先把前端页面主体部分的模型做出来</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/6755082-38ab64491eb926a9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图文上传界面"><br>前端的一些样式可以自己随便做这里不贴代码了</p>
-<p>###实现图文发布<br>首先的在static目录下建一个image文件夹把需要上传的图片存储在里面。然后获取图片的名字信息，和文字一起保存在数据库中。</p>
-<p>sc.py</p>
-<pre><code>#判断文件后缀名是否是图片类型文件
-UPLOAD_FOLDER = &apos;./static/image&apos;
-ALLOWED_EXTENSIONS = [&apos;png&apos;, &apos;jpg&apos;, &apos;jpeg&apos;, &apos;gif&apos;]
-app = Flask(__name__)
-
-#生成随机密钥
-app.config[&apos;UPLOAD_FOLDER&apos;] = UPLOAD_FOLDER
-app.config[&apos;SECRET_KEY&apos;] = os.urandom(24)
-app.config.from_object(config)
-db.init_app(app)
-
-def allowed_file(filename):
-    return &apos;.&apos; in filename and filename.rsplit(&apos;.&apos;, 1)[1] in ALLOWED_EXTENSIONS
-
-# 发布图文
-@app.route(&apos;/picture/&apos;, methods=[&apos;GET&apos;, &apos;POST&apos;])
-def upload_file():
-admin_id = session.get(&apos;user_id&apos;)
-if admin_id:
-    if request.method == &apos;GET&apos;:
-        return render_template(&apos;picture.html&apos;)
-    else:
-        file = request.files[&apos;file&apos;]
-        content = request.form.get(&apos;content&apos;)
-        if file:
-            if allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                file.save(os.path.join(app.config[&apos;UPLOAD_FOLDER&apos;], filename))
-            else:
-                return u&apos;请按要求重新选择要上传的文件！&apos;
-        else:
-            pass
-        photo1 = Article(content = content, picture_path = file.filename)
-        db.session.add(photo1)
-        db.session.commit()
-        return redirect(url_for(&apos;index&apos;))
-else:
-    return redirect(url_for(&apos;login_a&apos;))
-</code></pre><p>这上面的代码很大一部分来自于flask官方网站的图片上传部分，这是我自己添加了图文一起上传，只上传图片和只上传文字三个部分。</p>
 </the>]]></content>
       
         <categories>
@@ -341,16 +309,8 @@ if user_id:
     if user:
         return {&apos;user&apos;: user}
 return {}
-</code></pre><p>最后不要忘记在父模板中连接对应的按钮，比如：<br>base.html</p>
-<pre><code>&lt;ul class=&quot;nav navbar-nav navbar-right&quot;&gt;
-                    {% if user %}
-                                <li><a href="#">管理员</a></li>
-                                <li><a href="{{ url_for('logout_a') }}">注销</a></li>
-                          {% else %}
-                                <li><a href="{{ url_for('login_a') }}">登录</a></li>
-                          {% endif %}
-&lt;/ul&gt;
-</code></pre></the>]]></content>
+</code></pre><p>最后不要忘记在父模板中连接对应的按钮。</p>
+</the>]]></content>
       
         <categories>
             
